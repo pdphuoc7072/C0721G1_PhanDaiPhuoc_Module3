@@ -72,4 +72,3 @@ FROM
     product p ON p.product_id = od.product_id
 GROUP BY od.order_id;
 
-

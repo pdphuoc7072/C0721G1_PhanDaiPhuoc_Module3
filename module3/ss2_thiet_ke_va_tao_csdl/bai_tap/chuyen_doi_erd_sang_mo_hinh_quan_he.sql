@@ -13,9 +13,9 @@ CREATE TABLE vat_tu (
 );
 
 CREATE TABLE chi_tiet_phieu_xuat (
-    so_phieu_xuat INT NOT NULL,
-    ma_vat_tu INT NOT NULL,
-    UNIQUE (so_phieu_xuat , ma_vat_tu),
+    so_phieu_xuat INT,
+    ma_vat_tu INT,
+    PRIMARY KEY (so_phieu_xuat , ma_vat_tu),
     don_gia_xuat DOUBLE NOT NULL,
     so_luong_xuat INT NOT NULL,
     FOREIGN KEY (so_phieu_xuat)
@@ -30,9 +30,9 @@ CREATE TABLE phieu_nhap (
 );
 
 CREATE TABLE chi_tiet_phieu_nhap (
-    so_phieu_nhap INT NOT NULL,
-    ma_vat_tu INT NOT NULL,
-    UNIQUE (so_phieu_nhap , ma_vat_tu),
+    so_phieu_nhap INT,
+    ma_vat_tu INT,
+    PRIMARY KEY (so_phieu_nhap , ma_vat_tu),
     don_gia_nhap DOUBLE NOT NULL,
     so_luong_nhap INT NOT NULL,
     FOREIGN KEY (so_phieu_nhap)
@@ -57,9 +57,9 @@ CREATE TABLE don_dat_hang (
 );
 
 CREATE TABLE chi_tiet_don_dat_hang (
-    ma_vat_tu INT NOT NULL,
-    so_don_hang INT NOT NULL,
-    UNIQUE (ma_vat_tu , so_don_hang),
+    ma_vat_tu INT,
+    so_don_hang INT,
+    PRIMARY KEY (ma_vat_tu , so_don_hang),
     FOREIGN KEY (ma_vat_tu)
         REFERENCES vat_tu (ma_vat_tu),
     FOREIGN KEY (so_don_hang)
