@@ -24,11 +24,11 @@ CREATE TABLE nhan_vien (
     id_trinh_do INT NOT NULL,
     id_bo_phan INT NOT NULL,
     FOREIGN KEY (id_vi_tri)
-        REFERENCES vi_tri (id_vi_tri),
+        REFERENCES vi_tri (id_vi_tri) on update cascade on delete cascade,
     FOREIGN KEY (id_trinh_do)
-        REFERENCES trinh_do (id_trinh_do),
+        REFERENCES trinh_do (id_trinh_do) on update cascade on delete cascade,
     FOREIGN KEY (id_bo_phan)
-        REFERENCES bo_phan (id_bo_phan),
+        REFERENCES bo_phan (id_bo_phan) on update cascade on delete cascade,
     ngay_sinh DATE NOT NULL,
     so_cmnd VARCHAR(45) NOT NULL,
     luong INT NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE khach_hang (
     id_khach_hang INT AUTO_INCREMENT PRIMARY KEY,
     id_loai_khach INT NOT NULL,
     FOREIGN KEY (id_loai_khach)
-        REFERENCES loai_khach (id_loai_khach),
+        REFERENCES loai_khach (id_loai_khach) on update cascade on delete cascade,
     ho_ten VARCHAR(45) NOT NULL,
     ngay_sinh DATE NOT NULL,
     so_cmnd VARCHAR(45) NOT NULL,
@@ -76,9 +76,9 @@ CREATE TABLE dich_vu (
     id_kieu_thue INT NOT NULL,
     id_loai_dich_vu INT NOT NULL,
     FOREIGN KEY (id_kieu_thue)
-        REFERENCES kieu_thue (id_kieu_thue),
+        REFERENCES kieu_thue (id_kieu_thue) on update cascade on delete cascade,
     FOREIGN KEY (id_loai_dich_vu)
-        REFERENCES loai_dich_vu (id_loai_dich_vu),
+        REFERENCES loai_dich_vu (id_loai_dich_vu) on update cascade on delete cascade,
     trang_thai VARCHAR(45) NOT NULL
 );
 
@@ -88,11 +88,11 @@ CREATE TABLE hop_dong (
     id_khach_hang INT NOT NULL,
     id_dich_vu INT NOT NULL,
     FOREIGN KEY (id_nhan_vien)
-        REFERENCES nhan_vien (id_nhan_vien),
+        REFERENCES nhan_vien (id_nhan_vien) on update cascade on delete cascade,
     FOREIGN KEY (id_khach_hang)
-        REFERENCES khach_hang (id_khach_hang),
+        REFERENCES khach_hang (id_khach_hang) on update cascade on delete cascade,
     FOREIGN KEY (id_dich_vu)
-        REFERENCES dich_vu (id_dich_vu),
+        REFERENCES dich_vu (id_dich_vu) on update cascade on delete cascade,
     ngay_lam_hop_dong DATE NOT NULL,
     ngay_ket_thuc DATE NOT NULL,
     tien_dat_coc INT NOT NULL,
@@ -112,9 +112,9 @@ CREATE TABLE hop_dong_chi_tiet (
     id_hop_dong INT NOT NULL,
     id_dich_vu_di_kem INT NOT NULL,
     FOREIGN KEY (id_hop_dong)
-        REFERENCES hop_dong (id_hop_dong),
+        REFERENCES hop_dong (id_hop_dong) on update cascade on delete cascade,
     FOREIGN KEY (id_dich_vu_di_kem)
-        REFERENCES dich_vu_di_kem (id_dich_vu_di_kem),
+        REFERENCES dich_vu_di_kem (id_dich_vu_di_kem) on update cascade on delete cascade,
     so_luong INT NOT NULL
 );
 
@@ -170,6 +170,10 @@ VALUES
 ('Nước uống', 100000, 1, 'Còn chỗ'),
 ('Thuê xe', 2000000, 1, 'Còn chỗ');
 
+INSERT INTO dich_vu_di_kem (ten_dich_vu_di_kem, gia, don_vi, trang_thai_kha_dung)
+VALUES
+('Gym', 600000, 1, 'Còn chỗ');
+
 INSERT INTO nhan_vien (ho_ten_nhan_vien, id_vi_tri, id_trinh_do, id_bo_phan, ngay_sinh, so_cmnd, luong, so_dien_thoai, email, dia_chi)
 VALUES
 ('Nguyễn Thành Đạt', 6, 4, 4, '1965-04-04', '201451309', 40000000, '0904135089', 'abcghyu123@gmail.com', 'Hà Nội'),
@@ -197,7 +201,9 @@ VALUES
 (4, 'Nguyễn Trọng Nghĩa', '1985-01-21', '203526978', '0936426879', 'abmklopte156@gmail.com', 'Quảng Ngãi'),
 (1, 'Nguyễn Thị Na', '1999-04-29', '203126897', '0923567896', 'hoankl8790@gmail.com', 'Đà Nẵng'),
 (3, 'Đoàn Thị Vy', '1994-12-27', '205623897', '0904253687', 'sfvbh345@gmail.com', 'Hà Nội'),
-(1, 'Nguyễn Văn Long', '1974-03-22', '203412539', '0978523146', 'vbnjad238@gmail.com', 'Quãng Ngãi');
+(1, 'Nguyễn Văn Long', '1974-03-22', '203412539', '0978523146', 'vbnjad238@gmail.com', 'Quãng Ngãi'),
+(4, 'Nguyễn Tiến Dũng', '1970-02-20', '20100048', '0905789100', 'fghloidfg5678@gmail.com', 'Quảng Nam'),
+(2, 'Nguyễn Thị Ánh', '1980-12-17', '201741000', '0906413807', 'mnlop764365@gmail.com', 'Huế');
 
 INSERT INTO dich_vu (ten_dich_vu, dien_tich, so_tang, so_nguoi_toi_da, chi_phi_thue, id_kieu_thue, id_loai_dich_vu, trang_thai)
 VALUES
@@ -214,8 +220,8 @@ VALUES
 
 INSERT INTO hop_dong (id_nhan_vien, id_khach_hang, id_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc)
 VALUES
-(4, 1, 2, '2019-10-05', '2021-11-04', 5000000),
-(2, 4, 6, '2019-12-12', '2021-12-15', 6500000),
+(4, 1, 2, '2019-10-05', '2019-11-04', 5000000),
+(2, 4, 6, '2019-12-12', '2019-12-15', 6500000),
 (5, 2, 4, '2019-04-10', '2019-05-09', 3800000),
 (6, 7, 3, '2019-10-17', '2019-11-10', 7200000),
 (3, 1, 5, '2018-12-01', '2018-12-31', 4000000),
@@ -228,7 +234,13 @@ VALUES
 (2, 8, 5, '2019-10-15', '2019-10-28', 4500000),
 (9, 6, 1, '2019-03-15', '2019-03-27', 4000000),
 (7, 7, 2, '2018-11-20', '2018-11-25', 4500000),
-(6, 2, 3, '2019-11-01', '2019-11-09', 4800000);
+(6, 2, 3, '2019-11-01', '2019-11-09', 4800000),
+(2, 5, 9, '2019-02-20', '2019-02-25', 4000000),
+(4, 8, 8, '2018-11-06', '2018-11-09', 4500000),
+(3, 7, 10, '2019-11-16', '2019-11-20', 4800000),
+(5, 9, 7, '2018-12-01', '2018-12-09', 3800000),
+(6, 6, 6, '2019-02-01', '2019-02-09', 4000000),
+(7, 5, 8, '2019-01-01', '2019-01-07', 5000000);
 
 INSERT INTO hop_dong_chi_tiet (id_hop_dong, id_dich_vu_di_kem, so_luong)
 VALUES
@@ -256,7 +268,24 @@ VALUES
 (10, 2, 5),
 (9, 2, 3),
 (13, 2, 5),
-(14, 5, 1);
+(14, 5, 1),
+(16, 3, 5),
+(21, 5, 1),
+(15, 2, 3),
+(19, 4, 4),
+(20, 1, 5),
+(17, 3, 2),
+(18, 2, 4),
+(16, 2, 2),
+(21, 2, 3),
+(17, 2, 2),
+(19, 2, 4);
+
+INSERT INTO hop_dong_chi_tiet (id_hop_dong, id_dich_vu_di_kem, so_luong)
+VALUES
+(20, 6, 4);
+
+
 
 
 
