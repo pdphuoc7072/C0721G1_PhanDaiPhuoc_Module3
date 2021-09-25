@@ -48,6 +48,7 @@ WHERE
 GROUP BY hdct.id_hop_dong
 HAVING YEAR(hd.ngay_lam_hop_dong) = 2019;
 
+
 /*
 Task 13: Hiển thị thông tin các Dịch vụ đi kèm được sử dụng nhiều nhất bởi các Khách hàng đã đặt phòng. 
 (Lưu ý là có thể có nhiều dịch vụ có số lần sử dụng nhiều như nhau).
@@ -120,19 +121,24 @@ HAVING COUNT(hd.id_hop_dong) <= 3;
 /*
 Task 16: Xóa những Nhân viên chưa từng lập được hợp đồng nào từ năm 2017 đến năm 2019.
 */
-DELETE FROM nhan_vien
-WHERE id_nhan_vien = (
-SELECT id_nhan_vien
-FROM nhan_vien
-WHERE id_nhan_vien NOT IN (
-SELECT 
-    nv.id_nhan_vien
-FROM
-    nhan_vien nv
-        JOIN
-    hop_dong hd ON nv.id_nhan_vien = hd.id_nhan_vien
+SET SQL_SAFE_UPDATES=0;
+DELETE FROM nhan_vien 
 WHERE
-    YEAR(hd.ngay_lam_hop_dong) BETWEEN 2017 AND 2019
-GROUP BY nv.id_nhan_vien
-HAVING COUNT(hd.id_hop_dong) > 0));
+    id_nhan_vien NOT IN (SELECT 
+        id_nhan_vien
+    FROM
+        (SELECT 
+            nv.id_nhan_vien
+        FROM
+            nhan_vien nv
+        JOIN hop_dong hd ON nv.id_nhan_vien = hd.id_nhan_vien
+        
+        WHERE
+            YEAR(hd.ngay_lam_hop_dong) BETWEEN 2017 AND 2019
+        GROUP BY nv.id_nhan_vien
+        HAVING COUNT(hd.id_hop_dong) > 0) AS t);
+SET SQL_SAFE_UPDATES=1;
+
+SELECT * FROM nhan_vien;
+
 

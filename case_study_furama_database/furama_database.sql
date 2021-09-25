@@ -1,3 +1,5 @@
+DROP DATABASE furama_database;
+
 CREATE DATABASE furama_database;
 
 USE furama_database;
@@ -242,6 +244,10 @@ VALUES
 (6, 6, 6, '2019-02-01', '2019-02-09', 4000000),
 (7, 5, 8, '2019-01-01', '2019-01-07', 5000000);
 
+INSERT INTO hop_dong (id_nhan_vien, id_khach_hang, id_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc)
+VALUES
+(3, 11, 6, '2015-12-01', '2015-12-10', 4500000);
+
 INSERT INTO hop_dong_chi_tiet (id_hop_dong, id_dich_vu_di_kem, so_luong)
 VALUES
 (1, 1, 2),
@@ -285,6 +291,14 @@ INSERT INTO hop_dong_chi_tiet (id_hop_dong, id_dich_vu_di_kem, so_luong)
 VALUES
 (20, 6, 4);
 
+INSERT INTO hop_dong_chi_tiet (id_hop_dong, id_dich_vu_di_kem, so_luong)
+VALUES
+(18, 2, 2),
+(14, 2, 3);
+
+INSERT INTO hop_dong_chi_tiet (id_hop_dong, id_dich_vu_di_kem, so_luong)
+VALUES
+(2, 2, 3);
 
 
 
