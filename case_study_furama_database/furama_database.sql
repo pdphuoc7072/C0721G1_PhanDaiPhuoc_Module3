@@ -190,6 +190,10 @@ VALUES
 ('Lê Thị Vân', 1, 2, 2, '1996-08-20', '201400389', 10000000, '0905578001', 'dbnlop12@gmail.com', 'Đà Nẵng'),
 ('Nguyễn Thị Tuyết', 1, 2, 2, '2000-03-29', '201609134', 9000000, '0905589100', 'cvbop1508@gmail.com', 'Đà Nẵng');
 
+INSERT INTO nhan_vien (ho_ten_nhan_vien, id_vi_tri, id_trinh_do, id_bo_phan, ngay_sinh, so_cmnd, luong, so_dien_thoai, email, dia_chi)
+VALUES
+('Phan Văn Lê', 3, 4, 2, '1995-03-12', '201457009', 9000000, '0905100300', 'vbnmkhgfsd178@gmail.com', 'Hải Châu');
+
 INSERT INTO khach_hang (id_loai_khach, ho_ten, ngay_sinh, so_cmnd, so_dien_thoai, email, dia_chi)
 VALUES
 (1, 'Phan Đại Phước', '1990-07-27', '201784567', '0906514156', 'dfgh0908@gmail.com', 'Đà Nẵng'),
@@ -247,6 +251,15 @@ VALUES
 INSERT INTO hop_dong (id_nhan_vien, id_khach_hang, id_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc)
 VALUES
 (3, 11, 6, '2015-12-01', '2015-12-10', 4500000);
+
+INSERT INTO hop_dong (id_nhan_vien, id_khach_hang, id_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc)
+VALUES
+(12, 13, 6, '2019-12-12', '2019-12-15', 3000000),
+(12, 14, 5, '2019-12-12', '2019-12-19', 4000000);
+
+INSERT INTO hop_dong (id_nhan_vien, id_khach_hang, id_dich_vu, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc)
+VALUES
+(4, 10, 6, '2016-12-01', '2016-12-10', 4500000);
 
 INSERT INTO hop_dong_chi_tiet (id_hop_dong, id_dich_vu_di_kem, so_luong)
 VALUES

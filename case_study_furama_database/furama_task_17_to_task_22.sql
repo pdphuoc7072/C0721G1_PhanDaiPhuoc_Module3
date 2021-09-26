@@ -84,3 +84,36 @@ SELECT * FROM dich_vu_di_kem;
 Task 20: Hiển thị thông tin của tất cả các Nhân viên và Khách hàng có trong hệ thống, thông tin hiển thị bao gồm 
 ID (IDNhanVien, IDKhachHang), HoTen, Email, SoDienThoai, NgaySinh, DiaChi.
 */
+CREATE VIEW nv_kh_views AS
+SELECT id_nhan_vien AS id, ho_ten_nhan_vien AS ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi
+FROM nhan_vien
+UNION
+SELECT id_khach_hang AS id, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi
+FROM khach_hang;
+
+SELECT * FROM nv_kh_views;
+
+DROP VIEW nv_kh_views;
+
+/*
+Task 21: Tạo khung nhìn có tên là V_NHANVIEN để lấy được thông tin của tất cả các nhân viên có địa chỉ 
+là “Hải Châu” và đã từng lập hợp đồng cho 1 hoặc nhiều Khách hàng bất kỳ với ngày lập hợp đồng là “12/12/2019”
+*/
+CREATE VIEW v_nhanvien AS
+SELECT nv.id_nhan_vien, nv.ho_ten_nhan_vien, nv.ngay_sinh, nv.so_dien_thoai, nv.email, nv.dia_chi
+FROM nhan_vien nv
+JOIN hop_dong hd ON hd.id_nhan_vien = nv.id_nhan_vien
+WHERE nv.dia_chi = 'Hải Châu' AND hd.ngay_lam_hop_dong = '2019-12-12';
+
+SELECT * FROM v_nhanvien;
+
+DROP VIEW v_nhanvien;
+
+/*
+Task 22: Thông qua khung nhìn V_NHANVIEN thực hiện cập nhật địa chỉ thành “Liên Chiểu” đối với tất cả các Nhân viên 
+được nhìn thấy bởi khung nhìn này.
+*/
+SET SQL_SAFE_UPDATES = 0;
+UPDATE v_nhanvien
+SET dia_chi = 'Liên Chiểu';
+SET SQL_SAFE_UPDATES = 1;
