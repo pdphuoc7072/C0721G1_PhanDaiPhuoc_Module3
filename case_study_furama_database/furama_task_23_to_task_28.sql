@@ -71,10 +71,9 @@ END $$
 
 DELIMITER ;
 
-
 SET SQL_SAFE_UPDATES = 0;
 DELETE FROM hop_dong 
-WHERE id_hop_dong = 14;
+WHERE id_hop_dong = 26;
 SET SQL_SAFE_UPDATES = 1;
 
 SELECT * FROM dem_so_hop_dong_sau_khi_xoa;
@@ -85,17 +84,127 @@ với quy tắc sau: Ngày kết thúc hợp đồng phải lớn hơn ngày là
 nếu dữ liệu không hợp lệ thì in ra thông báo “Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày” trên console 
 của database
 */
+DELIMITER $$
+
+CREATE TRIGGER tr_2 BEFORE UPDATE ON hop_dong FOR EACH ROW
+
+BEGIN
+DECLARE error_message VARCHAR(255);
+SET error_message = 'Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày';
+IF (datediff(new.ngay_ket_thuc, old.ngay_ket_thuc)) < 2
+THEN 
+SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = error_message;
+
+END IF;
+
+END $$
+
+DELIMITER ;
+
+UPDATE hop_dong 
+SET 
+    ngay_ket_thuc = '2020-02-03'
+WHERE
+    id_hop_dong = 27;
 
 /*
 Task 27: Tạo user function thực hiện yêu cầu sau:
 a.	Tạo user function func_1: Đếm các dịch vụ đã được sử dụng với Tổng tiền là > 2.000.000 VNĐ.
+*/
+CREATE VIEW view_tong_tien AS
+SELECT dv.id_dich_vu, SUM(dv.chi_phi_thue + dvdk.gia * dvdk.don_vi) AS tong_tien
+FROM dich_vu dv
+JOIN hop_dong hd ON dv.id_dich_vu = hd.id_dich_vu
+JOIN hop_dong_chi_tiet hdct ON hdct.id_hop_dong = hd.id_hop_dong
+JOIN dich_vu_di_kem dvdk ON dvdk.id_dich_vu_di_kem = hdct.id_dich_vu_di_kem
+GROUP BY hd.id_dich_vu
+HAVING SUM(dv.chi_phi_thue + dvdk.gia * dvdk.don_vi) > 10000000;
+
+SELECT * FROM view_tong_tien;
+
+DELIMITER $$
+
+CREATE FUNCTION func_1 ()
+RETURNS INT
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+DECLARE count_dv INT;
+SET count_dv = (SELECT count(id_dich_vu) FROM view_tong_tien);
+RETURN count_dv;
+
+END $$
+
+DELIMITER ;
+
+SELECT func_1 ();
+
+/*
 b.	Tạo user function Func_2: Tính khoảng thời gian dài nhất tính từ lúc bắt đầu làm hợp đồng đến lúc kết thúc hợp đồng 
 mà Khách hàng đã thực hiện thuê dịch vụ (lưu ý chỉ xét các khoảng thời gian dựa vào từng lần làm hợp đồng thuê dịch vụ, 
 không xét trên toàn bộ các lần làm hợp đồng). Mã của Khách hàng được truyền vào như là 1 tham số của function này.
 */
 
+DELIMITER $$
+
+CREATE FUNCTION func_2 (id_kh INT)
+RETURNS INT
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+
+DECLARE max_tg INT;
+SET max_tg = (SELECT MAX(datediff(ngay_ket_thuc, ngay_lam_hop_dong)) FROM hop_dong
+WHERE id_khach_hang = id_kh
+GROUP BY id_khach_hang);
+RETURN max_tg;
+
+END $$
+
+DELIMITER ;
+
+SELECT func_2 (10);
 /*
 Task 28: Tạo Store procedure Sp_3 để tìm các dịch vụ được thuê bởi khách hàng với loại dịch vụ là “Room” từ đầu năm 2015 đến hết năm 2019 
 để xóa thông tin của các dịch vụ đó (tức là xóa các bảng ghi trong bảng DichVu) và xóa những HopDong sử dụng dịch vụ liên quan 
 (tức là phải xóa những bản ghi trong bảng HopDong) và những bản liên quan khác.
 */
+DELIMITER //
+
+CREATE PROCEDURE sp_3 (IN ten_ldv VARCHAR(45))
+
+BEGIN
+
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM dich_vu dv
+WHERE dv.id_dich_vu IN (
+SELECT dv.id_dich_vu FROM (
+SELECT hd.id_hop_dong, hd.id_dich_vu, hd.ngay_lam_hop_dong FROM dich_vu dv
+JOIN loai_dich_vu ldv ON dv.id_loai_dich_vu = ldv.id_loai_dich_vu
+JOIN hop_dong hd ON hd.id_dich_vu = dv.id_dich_vu
+WHERE ldv.ten_loai_dich_vu = ten_dv
+GROUP BY hd.id_dich_vu
+HAVING year(hd.ngay_lam_hop_dong) BETWEEN 2015 AND 2019) AS temp_table);
+SET SQL_SAFE_UPDATES = 1;
+
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM hop_dong hd
+WHERE hd.id_hop_dong IN (
+SELECT hd.id_hop_dong FROM (
+SELECT hd.id_hop_dong, hd.id_dich_vu, hd.ngay_lam_hop_dong FROM dich_vu dv
+JOIN loai_dich_vu ldv ON dv.id_loai_dich_vu = ldv.id_loai_dich_vu
+JOIN hop_dong hd ON hd.id_dich_vu = dv.id_dich_vu
+WHERE ldv.ten_loai_dich_vu = ten_dv
+GROUP BY hd.id_dich_vu
+HAVING year(hd.ngay_lam_hop_dong) BETWEEN 2015 AND 2019) AS temp_table);
+SET SQL_SAFE_UPDATES = 1;
+
+END //
+
+DELIMITER ;
+
+CALL sp_3 ('Room');
+
+DROP PROCEDURE sp_3;

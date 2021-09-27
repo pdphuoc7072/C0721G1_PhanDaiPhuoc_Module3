@@ -54,22 +54,20 @@ Task 13: Hiển thị thông tin các Dịch vụ đi kèm được sử dụng 
 (Lưu ý là có thể có nhiều dịch vụ có số lần sử dụng nhiều như nhau).
 */
 
-
 SELECT 
-    dvdk.id_dich_vu_di_kem,
+    hdct.id_dich_vu_di_kem,
     dvdk.ten_dich_vu_di_kem,
-    MAX(so_luong_dich_vu_di_kem) AS so_luong_dich_vu_di_kem_nhieu_nhat
+    COUNT(hdct.id_dich_vu_di_kem) AS so_luong_dich_vu_di_kem
 FROM
-    dich_vu_di_kem dvdk
+    hop_dong_chi_tiet hdct
         JOIN
-    (SELECT 
-        dvdk.id_dich_vu_di_kem,
-            dvdk.ten_dich_vu_di_kem,
-            COUNT(hdct.id_dich_vu_di_kem) AS so_luong_dich_vu_di_kem
+    dich_vu_di_kem dvdk ON dvdk.id_dich_vu_di_kem = hdct.id_dich_vu_di_kem
+GROUP BY hdct.id_dich_vu_di_kem
+HAVING COUNT(hdct.id_dich_vu_di_kem) >= ALL (SELECT 
+        COUNT(hdct.id_dich_vu_di_kem)
     FROM
-        dich_vu_di_kem dvdk
-    JOIN hop_dong_chi_tiet hdct ON dvdk.id_dich_vu_di_kem = hdct.id_dich_vu_di_kem
-    GROUP BY dvdk.id_dich_vu_di_kem) AS custom;
+        hop_dong_chi_tiet hdct
+    GROUP BY hdct.id_dich_vu_di_kem);
     
 /*
 Task 14: Hiển thị thông tin tất cả các Dịch vụ đi kèm chỉ mới được sử dụng một lần duy nhất. 
@@ -140,5 +138,3 @@ WHERE
 SET SQL_SAFE_UPDATES=1;
 
 SELECT * FROM nhan_vien;
-
-
