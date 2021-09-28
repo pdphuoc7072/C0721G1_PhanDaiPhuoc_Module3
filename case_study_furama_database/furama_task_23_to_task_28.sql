@@ -91,7 +91,7 @@ CREATE TRIGGER tr_2 BEFORE UPDATE ON hop_dong FOR EACH ROW
 BEGIN
 DECLARE error_message VARCHAR(255);
 SET error_message = 'Ngày kết thúc hợp đồng phải lớn hơn ngày làm hợp đồng ít nhất là 2 ngày';
-IF (datediff(new.ngay_ket_thuc, old.ngay_ket_thuc)) < 2
+IF (datediff(new.ngay_ket_thuc, old.ngay_lam_hop_dong)) < 2
 THEN 
 SIGNAL SQLSTATE '45000'
 SET MESSAGE_TEXT = error_message;
@@ -101,12 +101,12 @@ END IF;
 END $$
 
 DELIMITER ;
-
+DROP TRIGGER tr_2;
 UPDATE hop_dong 
 SET 
-    ngay_ket_thuc = '2020-02-03'
+    ngay_ket_thuc = '2019-12-14'
 WHERE
-    id_hop_dong = 27;
+    id_hop_dong = 23;
 
 /*
 Task 27: Tạo user function thực hiện yêu cầu sau:
@@ -178,27 +178,41 @@ CREATE PROCEDURE sp_3 (IN ten_ldv VARCHAR(45))
 BEGIN
 
 SET SQL_SAFE_UPDATES = 0;
-DELETE FROM dich_vu dv
-WHERE dv.id_dich_vu IN (
-SELECT dv.id_dich_vu FROM (
-SELECT hd.id_hop_dong, hd.id_dich_vu, hd.ngay_lam_hop_dong FROM dich_vu dv
-JOIN loai_dich_vu ldv ON dv.id_loai_dich_vu = ldv.id_loai_dich_vu
-JOIN hop_dong hd ON hd.id_dich_vu = dv.id_dich_vu
-WHERE ldv.ten_loai_dich_vu = ten_dv
-GROUP BY hd.id_dich_vu
-HAVING year(hd.ngay_lam_hop_dong) BETWEEN 2015 AND 2019) AS temp_table);
+DELETE FROM dich_vu 
+WHERE
+    id_dich_vu IN (SELECT 
+        id_dich_vu
+    FROM
+        (SELECT 
+            hd.id_hop_dong, hd.id_dich_vu, hd.ngay_lam_hop_dong
+        FROM
+            dich_vu dv
+        JOIN loai_dich_vu ldv ON dv.id_loai_dich_vu = ldv.id_loai_dich_vu
+        JOIN hop_dong hd ON hd.id_dich_vu = dv.id_dich_vu
+        
+        WHERE
+            ldv.ten_loai_dich_vu = ten_ldv
+        GROUP BY hd.id_dich_vu
+        HAVING YEAR(hd.ngay_lam_hop_dong) BETWEEN 2015 AND 2019) AS t);
 SET SQL_SAFE_UPDATES = 1;
 
 SET SQL_SAFE_UPDATES = 0;
-DELETE FROM hop_dong hd
-WHERE hd.id_hop_dong IN (
-SELECT hd.id_hop_dong FROM (
-SELECT hd.id_hop_dong, hd.id_dich_vu, hd.ngay_lam_hop_dong FROM dich_vu dv
-JOIN loai_dich_vu ldv ON dv.id_loai_dich_vu = ldv.id_loai_dich_vu
-JOIN hop_dong hd ON hd.id_dich_vu = dv.id_dich_vu
-WHERE ldv.ten_loai_dich_vu = ten_dv
-GROUP BY hd.id_dich_vu
-HAVING year(hd.ngay_lam_hop_dong) BETWEEN 2015 AND 2019) AS temp_table);
+DELETE FROM hop_dong 
+WHERE
+    id_hop_dong IN (SELECT 
+        id_hop_dong
+    FROM
+        (SELECT 
+            hd.id_hop_dong, hd.id_dich_vu, hd.ngay_lam_hop_dong
+        FROM
+            dich_vu dv
+        JOIN loai_dich_vu ldv ON dv.id_loai_dich_vu = ldv.id_loai_dich_vu
+        JOIN hop_dong hd ON hd.id_dich_vu = dv.id_dich_vu
+        
+        WHERE
+            ldv.ten_loai_dich_vu = ten_ldv
+        GROUP BY hd.id_dich_vu
+        HAVING YEAR(hd.ngay_lam_hop_dong) BETWEEN 2015 AND 2019) AS C);
 SET SQL_SAFE_UPDATES = 1;
 
 END //
@@ -206,5 +220,3 @@ END //
 DELIMITER ;
 
 CALL sp_3 ('Room');
-
-DROP PROCEDURE sp_3;
