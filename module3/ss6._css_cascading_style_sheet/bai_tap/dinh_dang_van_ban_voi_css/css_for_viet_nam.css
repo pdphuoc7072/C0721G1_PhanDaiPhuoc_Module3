@@ -1,0 +1,19 @@
+h1 {
+    border-bottom: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+p {
+    text-indent: 40px;
+    text-align: justify;
+    font-size: 20px;
+}
+a {
+    text-decoration: none;
+}
+div {
+    font-size: medium;
+}
+span {
+    color: deepskyblue;
+}
