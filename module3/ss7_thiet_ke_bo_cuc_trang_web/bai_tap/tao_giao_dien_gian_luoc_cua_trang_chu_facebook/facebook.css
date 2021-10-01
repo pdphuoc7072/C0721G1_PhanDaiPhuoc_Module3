@@ -1,0 +1,106 @@
+body {
+    font-family: Arial;
+    font-size: 0.9em;
+}
+header {
+    background-color: blue;
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #CDCDCD;
+    position: fixed;
+    top: 0;
+}
+header h2 {
+    width: 210px;
+    color: black;
+    line-height: 50px;
+    margin: 0;
+    float: left;
+    padding-left: 20px;
+}
+header ul, header li {
+    padding: 0;
+    margin: 0;
+}
+header li {
+    position: relative;
+    list-style: none;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+header li a {
+    width: 140px;
+    height: 50px;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    line-height: 50px;
+    color: white;
+    padding-left: 10px;
+    background-color: blue;
+}
+header ul ul li a {
+    width: 135px;
+    text-align: left;
+    padding-left: 15px;
+}
+header li a:hover {
+    background-color: red;
+}
+header ul ul {
+    position: absolute;
+    top: 50px;
+    visibility: hidden;
+}
+header ul li:hover ul {
+    visibility: visible;
+}
+aside {
+    background-color: whitesmoke;
+    width: 13%;
+    height: 650px;
+    float: left;
+}
+section {
+    background-color: lightgrey;
+    width: 70%;
+    height: 650px;
+    float: left;
+    padding: 30px;
+}
+article {
+    background-color: white;
+    padding: 5px;
+    margin: 10px;
+}
+#aside1 p {
+    background-color: lightgrey;
+    border: 1px solid #CDCDCD;
+    height: 50px;
+    line-height: 50px;
+    margin: 60px 20px;
+    text-align: center;
+}
+#aside2 p {
+    background-color: lightgrey;
+    border: 1px solid #CDCDCD;
+    height: 100px;
+    width: 180px;
+    margin: 60px 10px;
+    text-align: center;
+    padding: 35px 15px;
+    line-height: 100px;
+}
+footer {
+    height: 50px;
+    width: 100%;
+    background-color: lightblue;
+    clear: both;
+}
+footer p {
+    text-align: center;
+    line-height: 50px;
+}

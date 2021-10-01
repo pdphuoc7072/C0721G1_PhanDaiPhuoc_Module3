@@ -19,10 +19,17 @@ ol li {
     font-size: 15px;
 }
 .caption {
+    width: 650px;
+    height: 370px;
     text-align: center;
     border: 1px none;
+    margin: 20px;
+    position: relative;
 }
-.caption_text {
+.caption p {
     text-align: center;
-    padding: 0;
+    position: absolute;
+    bottom: 5px;
+    left: 120px;
+    margin: 5px;
 }

@@ -1,0 +1,124 @@
+* {
+    box-sizing: border-box;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.header {
+    background-color: black;
+    color: white;
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+}
+[class *= "col-"] {
+    float: left;
+    padding: 15px;
+    border: 1px hidden;
+}
+.menu ul {
+    list-style-type: none;
+    padding: 20px;
+    margin: 10px;
+    float: left;
+}
+.menu li {
+    cursor: pointer;
+    color: blue;
+    padding: 20px;
+    margin: 20px;
+}
+.main {
+    background-color: white;
+    height: auto;
+}
+.main h1 {
+    margin: 30px;
+}
+.main p {
+    text-align: justify;
+    line-height: 20px;
+    font-size: 20px;
+}
+
+.aside {
+    padding: 15px;
+    color: blue;
+    text-align: center;
+    font-size: 14px;
+}
+.aside p {
+    border: 1px solid #CDCDCD;
+    height: 100px;
+    line-height: 100px;
+    margin: 30px 10px;
+}
+.footer {
+    background-color: #0099cc;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    padding: 15px;
+}
+
+.header_content {
+    width: 120px;
+    height: 50px;
+    border: 1px solid #CDCDCD;
+    float: left;
+}
+.header_content p {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+    padding: 0;
+}
+#login {
+    float: right;
+    margin-right: 10px;
+}
+/* For mobile phones: */
+[class*="col-"] {
+    width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+    /* For tablets: */
+    .col-s-1 {width: 8.33%;}
+    .col-s-2 {width: 16.66%;}
+    .col-s-3 {width: 25%;}
+    .col-s-4 {width: 33.33%;}
+    .col-s-5 {width: 41.66%;}
+    .col-s-6 {width: 50%;}
+    .col-s-7 {width: 58.33%;}
+    .col-s-8 {width: 66.66%;}
+    .col-s-9 {width: 75%;}
+    .col-s-10 {width: 83.33%;}
+    .col-s-11 {width: 91.66%;}
+    .col-s-12 {width: 100%;}
+}
+
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 25%;}
+    .col-4 {width: 33.33%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 50%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+}
+@media only screen and (orientation: landscape) {
+    body {
+        background-color: lightcyan;
+    }
+}
+

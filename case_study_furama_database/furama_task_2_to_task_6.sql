@@ -9,9 +9,9 @@ SELECT
 FROM
     nhan_vien
 WHERE
-    (SUBSTR(ho_ten_nhan_vien, - 7) LIKE '% T%'
-        OR SUBSTR(ho_ten_nhan_vien, - 7) LIKE '% H%'
-        OR SUBSTR(ho_ten_nhan_vien, - 7) LIKE '% K%')
+    (substring_index(ho_ten_nhan_vien, " ", - 1) LIKE 'T%'
+        OR substring_index(ho_ten_nhan_vien, " ", - 1) LIKE 'H%'
+        OR substring_index(ho_ten_nhan_vien, " ", - 1) LIKE 'K%')
         AND CHAR_LENGTH(ho_ten_nhan_vien) <= 15;
         
 /*

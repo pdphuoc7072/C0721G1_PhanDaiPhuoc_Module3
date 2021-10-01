@@ -101,10 +101,10 @@ END IF;
 END $$
 
 DELIMITER ;
-DROP TRIGGER tr_2;
+
 UPDATE hop_dong 
 SET 
-    ngay_ket_thuc = '2019-12-14'
+    ngay_ket_thuc = '2019-12-13'
 WHERE
     id_hop_dong = 23;
 
@@ -165,7 +165,7 @@ END $$
 
 DELIMITER ;
 
-SELECT func_2 (10);
+SELECT func_2 (1);
 /*
 Task 28: Tạo Store procedure Sp_3 để tìm các dịch vụ được thuê bởi khách hàng với loại dịch vụ là “Room” từ đầu năm 2015 đến hết năm 2019 
 để xóa thông tin của các dịch vụ đó (tức là xóa các bảng ghi trong bảng DichVu) và xóa những HopDong sử dụng dịch vụ liên quan 
