@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: ACER
-  Date: 10/6/2021
-  Time: 8:17 PM
+  Date: 10/7/2021
+  Time: 3:20 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -24,33 +24,40 @@
 </head>
 <body>
 <h1>Search product by name</h1>
-<p>
-    <c:if test='${requestScope["message"] != null}'>
-        <span class="message">${requestScope["message"]}</span>
-    </c:if>
-</p>
-<p>
-    <a href="/product">Back to product list</a>
-</p>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Price</th>
-        <th scope="col">Description</th>
-        <th scope="col">Producer</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${requestScope['productList']}" var="productList">
+<c:if test="${empty productList}">
+    <h3 style="color: red">No results were found</h3>
+    <p><a href="/product">Back to product list</a></p>
+</c:if>
+<c:if test="${not empty productList}">
+    <p>
+        <c:if test='${requestScope["message"] != null}'>
+            <span class="message">${requestScope["message"]}</span>
+        </c:if>
+    </p>
+    <p>
+        <a href="/product">Back to product list</a>
+    </p>
+    <table class="table table-striped">
+        <thead>
         <tr>
-            <td>${productList.getName()}</td>
-            <td>${productList.getPrice()}</td>
-            <td>${productList.getDescription()}</td>
-            <td>${productList.getProducer()}</td>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Description</th>
+            <th scope="col">Producer</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach items="${requestScope['productList']}" var="productList">
+            <tr>
+                <td>${productList.getName()}</td>
+                <td>${productList.getPrice()}</td>
+                <td>${productList.getDescription()}</td>
+                <td>${productList.getProducer()}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</c:if>
+
 </body>
 </html>

@@ -217,9 +217,6 @@ public class ProductServlet extends HttpServlet {
         RequestDispatcher dispatcher;
         if (productList == null) {
             dispatcher = request.getRequestDispatcher("/error-404.jsp");
-        } else if (productList.size() == 0) {
-            request.setAttribute("message", "No results were found");
-            dispatcher = request.getRequestDispatcher("/product/search-by-name-no-found.jsp");
         } else {
             request.setAttribute("productList", productList);
             request.setAttribute("message", "Search successful");
