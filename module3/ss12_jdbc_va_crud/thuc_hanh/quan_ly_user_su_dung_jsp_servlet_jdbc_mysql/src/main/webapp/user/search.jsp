@@ -22,9 +22,9 @@
 </head>
 <body>
 <h1>Search user by country</h1>
-<p>
+<h3>
     <a href="users?action=users">Back to list all users</a>
-</p>
+</h3>
 <form method="post">
     <div class="row mt-2">
         <div class="col-4">

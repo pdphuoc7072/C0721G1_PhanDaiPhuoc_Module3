@@ -21,13 +21,13 @@
 </head>
 <body>
 <h1>User Management</h1>
-<h4>
+<h3>
     <a href="/users?action=create">Add new user</a>
-</h4>
-<h4>
+</h3>
+<h3>
     <a href="/users?action=search">Search user by country</a>
-</h4>
-<h4>
+</h3>
+<h3>
     <p>Sort user by name</p>
     <ul>
         <li>
@@ -37,7 +37,7 @@
             <a href="/users?action=sort&sort=DESC">Sort user by name (DESC)</a>
         </li>
     </ul>
-</h4>
+</h3>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -59,12 +59,43 @@
                 <a href="/users?action=edit&id=${user.getId()}">Edit</a>
             </td>
             <td>
-                <a href="/users?action=delete&id=${user.getId()}">Delete</a>
+                <button onclick="onDelete(${user.getId()})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                    Delete
+                </button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="/users">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="" id="idUserDel">
+                                <div class="modal-body">
+                                    Are you sure to delete this user?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 
+<script>
+    function onDelete(idUser) {
+        document.getElementById("idUserDel").value = idUser;
+    }
+</script>
 </body>
 </html>

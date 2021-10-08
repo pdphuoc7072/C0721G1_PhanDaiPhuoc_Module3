@@ -25,11 +25,11 @@
 <h3>
     <a href="users?action=users">Back to list all users</a>
 </h3>
-<p>
+<h3>
     <c:if test='${requestScope["message"] != null}'>
         <span class="message">${requestScope["message"]}</span>
     </c:if>
-</p>
+</h3>
 <form method="post">
     <legend>User information</legend>
     <div class="row mt-2">
@@ -60,7 +60,7 @@
                     <input type="text" class="form-control" name="email" value="${requestScope["existingUser"].getEmail()}">
                 </div>
             </div>
-            <div class="row mt-2">
+           <div class="row mt-2">
                 <div class="col-4">
                     <label class="col-form-label">Country</label>
                 </div>

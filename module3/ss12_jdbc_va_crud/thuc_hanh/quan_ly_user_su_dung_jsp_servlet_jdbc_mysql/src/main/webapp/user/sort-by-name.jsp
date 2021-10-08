@@ -22,14 +22,14 @@
 <body>
 <h1>User Management</h1>
 
-<h4>
+<h3>
     <a href="users?action=users">Back to list all users</a>
-</h4>
-<p>
+</h3>
+<h3>
     <c:if test='${requestScope["message"] != null}'>
         <span class="message">${requestScope["message"]}</span>
     </c:if>
-</p>
+</h3>
 <table class="table table-striped">
     <thead>
     <tr>

@@ -27,14 +27,14 @@
     <a href="users?action=users">Back to list all users</a>
 </c:if>
 <c:if test="${not empty userListToSearch}">
-    <p>
+    <h3>
         <c:if test='${requestScope["message"] != null}'>
             <span class="message">${requestScope["message"]}</span>
         </c:if>
-    </p>
-    <p>
+    </h3>
+    <h3>
         <a href="users?action=users">Back to list all users</a>
-    </p>
+    </h3>
     <table class="table table-striped">
         <thead>
         <tr>
