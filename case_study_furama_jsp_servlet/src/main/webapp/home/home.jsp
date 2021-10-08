@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-success sticky-top">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -75,8 +75,8 @@
                         Customer
                     </a>
                     <div class="dropdown-menu" aria-labelledby="Customer">
-                        <a class="dropdown-item" href="#">Create new customer</a>
-                        <a class="dropdown-item" href="#">Show list all customer</a>
+                        <a class="dropdown-item" href="/customer?action=create">Create new customer</a>
+                        <a class="dropdown-item" href="/customer">Show list all customer</a>
                     </div>
                 </li>
 
@@ -86,8 +86,8 @@
                         Service
                     </a>
                     <div class="dropdown-menu" aria-labelledby="Service">
-                        <a class="dropdown-item" href="#">Create new service</a>
-                        <a class="dropdown-item" href="#">Show list all service</a>
+                        <a class="dropdown-item" href="#">Create new model.service</a>
+                        <a class="dropdown-item" href="#">Show list all model.service</a>
                     </div>
                 </li>
 
@@ -110,7 +110,7 @@
     </nav>
 
     <div class="row">
-        <div class="col-3">
+        <div class="col-3 bg-light">
             <p>Nội dung mục liên kết</p>
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
