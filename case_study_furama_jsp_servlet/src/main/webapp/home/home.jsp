@@ -97,8 +97,8 @@
                         Contract
                     </a>
                     <div class="dropdown-menu" aria-labelledby="Contract">
-                        <a class="dropdown-item" href="#">Create new contract</a>
-                        <a class="dropdown-item" href="#">Show list all contracts</a>
+                        <a class="dropdown-item" href="/contract?action=create">Create new contract</a>
+                        <a class="dropdown-item" href="/contract">Show list all contracts</a>
                     </div>
                 </li>
             </ul>

@@ -121,8 +121,8 @@ CREATE TABLE service (
 
 CREATE TABLE contract (
     contract_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    contract_start_date DATETIME NOT NULL,
-    contract_end_date DATETIME NOT NULL,
+    contract_start_date DATE NOT NULL,
+    contract_end_date DATE NOT NULL,
     contract_deposit DOUBLE NOT NULL,
     contract_total_money DOUBLE NOT NULL,
     employee_id INT NOT NULL,

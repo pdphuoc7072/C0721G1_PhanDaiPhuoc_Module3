@@ -86,7 +86,7 @@ public class CustomerServlet extends HttpServlet {
         Customer customer = new Customer(name, birthday, gender, idCard, phone, email, address, customerTypeId);
         customerService.insertCustomer(customer);
         request.setAttribute("message", "Create successful");
-        request.getRequestDispatcher("customer/create.jsp").forward(request, response);
+        request.getRequestDispatcher("/customer/create.jsp").forward(request, response);
     }
     private void deleteCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -99,7 +99,7 @@ public class CustomerServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         Customer customer = customerService.selectCustomer(id);
         request.setAttribute("customer", customer);
-        request.getRequestDispatcher("customer/edit.jsp").forward(request, response);
+        request.getRequestDispatcher("/customer/edit.jsp").forward(request, response);
     }
     private void editCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -144,6 +144,6 @@ public class CustomerServlet extends HttpServlet {
         Customer customer = new Customer(id, name, birthday, genderSQL, idCard, phone, email, address, customerTypeIdSQL);
         customerService.updateCustomer(customer);
         request.setAttribute("message", "Update successful");
-        request.getRequestDispatcher("customer/edit.jsp").forward(request, response);
+        request.getRequestDispatcher("/customer/edit.jsp").forward(request, response);
     }
 }
