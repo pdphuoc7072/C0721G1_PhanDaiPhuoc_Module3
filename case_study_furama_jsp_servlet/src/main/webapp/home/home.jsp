@@ -64,8 +64,8 @@
                         Employee
                     </a>
                     <div class="dropdown-menu" aria-labelledby="Employee">
-                        <a class="dropdown-item" href="#">Create new employee</a>
-                        <a class="dropdown-item" href="#">Show list all employee</a>
+                        <a class="dropdown-item" href="/employee?action=create">Create new employee</a>
+                        <a class="dropdown-item" href="/employee">Show list all employees</a>
                     </div>
                 </li>
 
@@ -86,8 +86,8 @@
                         Service
                     </a>
                     <div class="dropdown-menu" aria-labelledby="Service">
-                        <a class="dropdown-item" href="#">Create new model.service</a>
-                        <a class="dropdown-item" href="#">Show list all model.service</a>
+                        <a class="dropdown-item" href="/service?action=create">Create new service</a>
+                        <a class="dropdown-item" href="/service">Show list all services</a>
                     </div>
                 </li>
 
@@ -98,7 +98,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="Contract">
                         <a class="dropdown-item" href="#">Create new contract</a>
-                        <a class="dropdown-item" href="#">Show list all contract</a>
+                        <a class="dropdown-item" href="#">Show list all contracts</a>
                     </div>
                 </li>
             </ul>

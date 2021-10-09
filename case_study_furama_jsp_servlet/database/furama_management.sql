@@ -52,7 +52,7 @@ CREATE TABLE employee (
     position_id INT NOT NULL,
     education_degree_id INT NOT NULL,
     division_id INT NOT NULL,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     FOREIGN KEY (position_id)
         REFERENCES position (position_id)
         ON UPDATE CASCADE ON DELETE CASCADE,
@@ -67,6 +67,7 @@ CREATE TABLE employee (
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+
 CREATE TABLE customer_type (
     customer_type_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     customer_type_name VARCHAR(45) NOT NULL
@@ -76,7 +77,7 @@ CREATE TABLE customer (
     customer_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     customer_name VARCHAR(45) NOT NULL,
     customer_birthday DATE NOT NULL,
-    customer_gender BIT(1) NOT NULL,
+    customer_gender INT NOT NULL,
     customer_id_card VARCHAR(45) NOT NULL,
     customer_phone VARCHAR(45) NOT NULL,
     customer_email VARCHAR(45) NOT NULL,
@@ -210,3 +211,18 @@ VALUES
 ('Thức ăn', 400000, 1, 'Còn chỗ'),
 ('Nước uống', 120000, 1, 'Còn chỗ'),
 ('Thuê xe', 2500000, 1, 'Còn chỗ');
+
+INSERT INTO `user`
+VALUES
+('thanhdat', '123456789'),
+('xuanson', '123456789'),
+('thihong', '123456789'),
+('thianh', '123456789'),
+('vanhoang', '123456789'),
+('tuankiet', '123456789'),
+('vanthuong', '123456789'),
+('trungkien', '123456789'),
+('vanhau', '123456789'),
+('thivan', '123456789'),
+('thituyet', '123456789'),
+('vanle', '123456789');

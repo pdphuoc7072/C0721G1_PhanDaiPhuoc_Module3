@@ -10,10 +10,11 @@ import java.io.IOException;
 @WebServlet(name = "HomeServlet", urlPatterns = {"" , "/home"})
 public class HomeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("home/home.jsp").forward(request, response);
     }
 }

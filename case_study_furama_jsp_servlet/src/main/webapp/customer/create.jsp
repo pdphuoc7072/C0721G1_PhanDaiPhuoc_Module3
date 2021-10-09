@@ -56,9 +56,9 @@
                 <div class="col-8">
                     <select class="form-select" aria-label="Default select example" name="gender">
                         <option selected>Chọn giới tính</option>
-                        <option value="Nam">Nam</option>
-                        <option value="Nữ">Nữ</option>
-                        <option value="LGBT">LGBT</option>
+                        <option value="1">Nam</option>
+                        <option value="2">Nữ</option>
+                        <option value="3">LGBT</option>
                     </select>
                 </div>
             </div>
@@ -99,13 +99,13 @@
                     <label class="col-form-label">Customer type</label>
                 </div>
                 <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="customer_type">
+                    <select class="form-select" aria-label="Default select example" name="customer_type_id">
                         <option selected>Chọn loại khách hàng</option>
-                        <option value="Diamond">Diamond</option>
-                        <option value="Platinium">Platinium</option>
-                        <option value="Gold">Gold</option>
-                        <option value="Silver">Silver</option>
-                        <option value="Member">Member</option>
+                        <option value="1">Diamond</option>
+                        <option value="2">Platinium</option>
+                        <option value="3">Gold</option>
+                        <option value="4">Silver</option>
+                        <option value="5">Member</option>
                     </select>
                 </div>
             </div>

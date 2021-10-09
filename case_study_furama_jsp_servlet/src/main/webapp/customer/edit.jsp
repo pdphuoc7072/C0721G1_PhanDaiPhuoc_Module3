@@ -32,7 +32,7 @@
 <form method="post">
     <legend>Customer information</legend>
     <div class="row mt-2">
-        <div class="col-4">
+        <div class="col-6">
             <c:if test="${customer != null}">
                 <div class="row mt-2">
                     <div class="col-4">
@@ -116,19 +116,19 @@
                 <div class="col-8">
                     <c:choose>
                         <c:when test="${customer.customerTypeId == 1}">
-                            <input type="text" class="form-control" name="customer_type" value="Diamond">
+                            <input type="text" class="form-control" name="customer_type_id" value="Diamond">
                         </c:when>
                         <c:when test="${customer.customerTypeId == 2}">
-                            <input type="text" class="form-control" name="customer_type" value="Platinium">
+                            <input type="text" class="form-control" name="customer_type_id" value="Platinium">
                         </c:when>
                         <c:when test="${customer.customerTypeId == 3}">
-                            <input type="text" class="form-control" name="customer_type" value="Gold">
+                            <input type="text" class="form-control" name="customer_type_id" value="Gold">
                         </c:when>
                         <c:when test="${customer.customerTypeId == 4}">
-                            <input type="text" class="form-control" name="customer_type" value="Silver">
+                            <input type="text" class="form-control" name="customer_type_id" value="Silver">
                         </c:when>
                         <c:when test="${customer.customerTypeId == 5}">
-                            <input type="text" class="form-control" name="customer_type" value="Member">
+                            <input type="text" class="form-control" name="customer_type_id" value="Member">
                         </c:when>
                     </c:choose>
                 </div>
@@ -136,10 +136,10 @@
             <div class="row mt-2">
                 <div class="col-4">
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Update user
+                        Update customer
                     </button>
 
                     <!-- Modal -->
@@ -162,8 +162,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-2">
                 </div>
             </div>
         </div>

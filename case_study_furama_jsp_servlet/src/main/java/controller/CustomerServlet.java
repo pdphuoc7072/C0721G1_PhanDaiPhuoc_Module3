@@ -77,43 +77,13 @@ public class CustomerServlet extends HttpServlet {
     private void createNewCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
-        String gender = request.getParameter("gender");
-        int genderSQL = 0;
-        switch (gender) {
-            case "Nam":
-                genderSQL = 1;
-                break;
-            case "Nữ":
-                genderSQL = 2;
-                break;
-            case "LGBT":
-                genderSQL = 3;
-                break;
-        }
+        int gender = Integer.parseInt(request.getParameter("gender"));
         String idCard = request.getParameter("id_card");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        String customerType = request.getParameter("customer_type");
-        int customerTypeSQL = 0;
-        switch (customerType) {
-            case "Diamond":
-                customerTypeSQL = 1;
-                break;
-            case "Platinium":
-                customerTypeSQL = 2;
-                break;
-            case "Gold":
-                customerTypeSQL = 3;
-                break;
-            case "Silver":
-                customerTypeSQL = 4;
-                break;
-            case "Member":
-                customerTypeSQL = 5;
-                break;
-        }
-        Customer customer = new Customer(name, birthday, genderSQL, idCard, phone, email, address, customerTypeSQL);
+        int customerTypeId = Integer.parseInt(request.getParameter("customer_type_id"));
+        Customer customer = new Customer(name, birthday, gender, idCard, phone, email, address, customerTypeId);
         customerService.insertCustomer(customer);
         request.setAttribute("message", "Create successful");
         request.getRequestDispatcher("customer/create.jsp").forward(request, response);
@@ -152,26 +122,26 @@ public class CustomerServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        String customerType = request.getParameter("customer_type");
-        int customerTypeSQL = 0;
-        switch (customerType) {
+        String customerTypeId = request.getParameter("customer_type_id");
+        int customerTypeIdSQL = 0;
+        switch (customerTypeId) {
             case "Diamond":
-                customerTypeSQL = 1;
+                customerTypeIdSQL = 1;
                 break;
             case "Platinium":
-                customerTypeSQL = 2;
+                customerTypeIdSQL = 2;
                 break;
             case "Gold":
-                customerTypeSQL = 3;
+                customerTypeIdSQL = 3;
                 break;
             case "Silver":
-                customerTypeSQL = 4;
+                customerTypeIdSQL = 4;
                 break;
             case "Member":
-                customerTypeSQL = 5;
+                customerTypeIdSQL = 5;
                 break;
         }
-        Customer customer = new Customer(name, birthday, genderSQL, idCard, phone, email, address, customerTypeSQL);
+        Customer customer = new Customer(id, name, birthday, genderSQL, idCard, phone, email, address, customerTypeIdSQL);
         customerService.updateCustomer(customer);
         request.setAttribute("message", "Update successful");
         request.getRequestDispatcher("customer/edit.jsp").forward(request, response);
