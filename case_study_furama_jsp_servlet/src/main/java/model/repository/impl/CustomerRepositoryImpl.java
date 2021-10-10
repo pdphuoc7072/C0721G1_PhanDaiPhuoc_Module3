@@ -1,6 +1,7 @@
 package model.repository.impl;
 
 import model.bean.Customer;
+import model.bean.Employee;
 import model.repository.ICustomerRepository;
 
 import java.sql.*;
@@ -21,6 +22,8 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
             "customer_birthday = ?, customer_gender = ?, customer_id_card = ?, customer_phone = ?, customer_email = ?, " +
             "customer_address = ?, customer_type_id = ? WHERE customer_id = ?;";
     private static final String DELETE_CUSTOMER_SQL = "DELETE FROM customer WHERE customer_id = ?; ";
+    private static final String SELECT_CUSTOMER_BY_NAME = "SELECT * FROM customer WHERE substring_index(customer_name,' ', -1) LIKE ?;";
+    private static final String SELECT_CUSTOMER_BY_PHONE = "SELECT * FROM customer WHERE customer_phone LIKE ?;";
 
     public CustomerRepositoryImpl () {
     }
@@ -134,6 +137,62 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
             rowDeleted = preparedStatement.executeUpdate() > 0;
         }
         return rowDeleted;
+    }
+
+    @Override
+    public List<Customer> searchCustomerByName(String search) {
+        List<Customer> customerList = new ArrayList<>();
+        Customer customer = null;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CUSTOMER_BY_NAME);) {
+            String searchSQL = search.concat("%");
+            preparedStatement.setString(1, searchSQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("customer_id");
+                String name = resultSet.getString("customer_name");
+                String birthday = resultSet.getString("customer_birthday");
+                int gender = resultSet.getInt("customer_gender");
+                String idCard = resultSet.getString("customer_id_card");
+                String phone = resultSet.getString("customer_phone");
+                String email = resultSet.getString("customer_email");
+                String address = resultSet.getString("customer_address");
+                int customerTypeId = resultSet.getInt("customer_type_id");
+                customer = new Customer(id, name, birthday, gender, idCard, phone, email, address, customerTypeId);
+                customerList.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerList;
+    }
+
+    @Override
+    public List<Customer> searchCustomerByPhone(String search) {
+        List<Customer> customerList = new ArrayList<>();
+        Customer customer = null;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CUSTOMER_BY_PHONE);) {
+            String searchSQL = search.concat("%");
+            preparedStatement.setString(1, searchSQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("customer_id");
+                String name = resultSet.getString("customer_name");
+                String birthday = resultSet.getString("customer_birthday");
+                int gender = resultSet.getInt("customer_gender");
+                String idCard = resultSet.getString("customer_id_card");
+                String phone = resultSet.getString("customer_phone");
+                String email = resultSet.getString("customer_email");
+                String address = resultSet.getString("customer_address");
+                int customerTypeId = resultSet.getInt("customer_type_id");
+                customer = new Customer(id, name, birthday, gender, idCard, phone, email, address, customerTypeId);
+                customerList.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerList;
     }
 
     private void printSQLException(SQLException ex) {

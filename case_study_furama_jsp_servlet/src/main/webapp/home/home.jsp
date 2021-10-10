@@ -88,6 +88,7 @@
                     <div class="dropdown-menu" aria-labelledby="Service">
                         <a class="dropdown-item" href="/service?action=create">Create new service</a>
                         <a class="dropdown-item" href="/service">Show list all services</a>
+                        <a class="dropdown-item" href="/service-detail">Show list all service detail</a>
                     </div>
                 </li>
 
@@ -99,6 +100,8 @@
                     <div class="dropdown-menu" aria-labelledby="Contract">
                         <a class="dropdown-item" href="/contract?action=create">Create new contract</a>
                         <a class="dropdown-item" href="/contract">Show list all contracts</a>
+                        <a class="dropdown-item" href="/contract-detail?action=create">Create new contract detail</a>
+                        <a class="dropdown-item" href="/contract-detail">Show list all contract detail</a>
                     </div>
                 </li>
             </ul>

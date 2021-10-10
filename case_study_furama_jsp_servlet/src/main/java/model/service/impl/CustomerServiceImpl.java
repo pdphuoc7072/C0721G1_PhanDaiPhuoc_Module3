@@ -33,4 +33,14 @@ public class CustomerServiceImpl implements ICustomerService {
     public boolean deleteCustomer(int id) throws SQLException {
         return customerRepository.deleteCustomer(id);
     }
+
+    @Override
+    public List<Customer> searchCustomerByName(String search) {
+        return customerRepository.searchCustomerByName(search);
+    }
+
+    @Override
+    public List<Customer> searchCustomerByPhone(String search) {
+        return customerRepository.searchCustomerByPhone(search);
+    }
 }

@@ -34,4 +34,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
     public boolean deleteEmployee(int id) throws SQLException {
         return employeeRepository.deleteEmployee(id);
     }
+
+    @Override
+    public List<Employee> searchEmployeeByName(String search) {
+        return employeeRepository.searchEmployeeByName(search);
+    }
+
+    @Override
+    public List<Employee> searchEmployeeByPhone(String search) {
+        return employeeRepository.searchEmployeeByPhone(search);
+    }
 }

@@ -22,10 +22,13 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
             "employee_id_card = ?, employee_salary = ?, employee_phone = ?, employee_email = ?, employee_address = ?, " +
             "position_id = ?, education_degree_id = ?, division_id = ?, username = ? WHERE employee_id = ?;";
     private static final String DELETE_EMPLOYEE_SQL = "DELETE FROM employee WHERE employee_id = ?; ";
+    private static final String SELECT_EMPLOYEE_BY_NAME = "SELECT * FROM employee WHERE substring_index(employee_name,' ', -1) LIKE ?;";
+    private static final String SELECT_EMPLOYEE_BY_PHONE = "SELECT * FROM employee WHERE employee_phone LIKE ?;";
 
-    public EmployeeRepositoryImpl (){}
+    public EmployeeRepositoryImpl() {
+    }
 
-    protected Connection getConnection () {
+    protected Connection getConnection() {
         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -70,7 +73,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
     public List<Employee> selectAllEmployees() {
         List<Employee> employeeList = new ArrayList<>();
         try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_EMPLOYEES);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_EMPLOYEES);) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("employee_id");
@@ -98,7 +101,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
     @Override
     public void insertEmployee(Employee employee) throws SQLException {
         try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_EMPLOYEE_SQL);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_EMPLOYEE_SQL);) {
             preparedStatement.setString(1, employee.getName());
             preparedStatement.setString(2, employee.getBirthday());
             preparedStatement.setString(3, employee.getIdCard());
@@ -142,11 +145,73 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
     public boolean deleteEmployee(int id) throws SQLException {
         boolean rowDeleted;
         try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_EMPLOYEE_SQL);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_EMPLOYEE_SQL);) {
             preparedStatement.setInt(1, id);
             rowDeleted = preparedStatement.executeUpdate() > 0;
         }
         return rowDeleted;
+    }
+
+    @Override
+    public List<Employee> searchEmployeeByName(String search) {
+        List<Employee> employeeList = new ArrayList<>();
+        Employee employee = null;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_NAME);) {
+            String searchSQL = search.concat("%");
+            preparedStatement.setString(1, searchSQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("employee_id");
+                String name = resultSet.getString("employee_name");
+                String birthday = resultSet.getString("employee_birthday");
+                String idCard = resultSet.getString("employee_id_card");
+                double salary = resultSet.getDouble("employee_salary");
+                String phone = resultSet.getString("employee_phone");
+                String email = resultSet.getString("employee_email");
+                String address = resultSet.getString("employee_address");
+                int positionId = resultSet.getInt("position_id");
+                int educationDegreeId = resultSet.getInt("education_degree_id");
+                int divisionId = resultSet.getInt("division_id");
+                String username = resultSet.getString("username");
+                employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
+                employeeList.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employeeList;
+    }
+
+    @Override
+    public List<Employee> searchEmployeeByPhone(String search) {
+        List<Employee> employeeList = new ArrayList<>();
+        Employee employee = null;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_PHONE);) {
+            String searchSQL = search.concat("%");
+            preparedStatement.setString(1, searchSQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("employee_id");
+                String name = resultSet.getString("employee_name");
+                String birthday = resultSet.getString("employee_birthday");
+                String idCard = resultSet.getString("employee_id_card");
+                double salary = resultSet.getDouble("employee_salary");
+                String phone = resultSet.getString("employee_phone");
+                String email = resultSet.getString("employee_email");
+                String address = resultSet.getString("employee_address");
+                int positionId = resultSet.getInt("position_id");
+                int educationDegreeId = resultSet.getInt("education_degree_id");
+                int divisionId = resultSet.getInt("division_id");
+                String username = resultSet.getString("username");
+                employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
+                employeeList.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employeeList;
     }
 
     private void printSQLException(SQLException ex) {

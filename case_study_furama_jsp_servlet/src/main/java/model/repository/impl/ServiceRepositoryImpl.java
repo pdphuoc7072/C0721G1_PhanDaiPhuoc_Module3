@@ -23,7 +23,7 @@ public class ServiceRepositoryImpl implements IServiceRepository {
     protected Connection getConnection () {
         Connection connection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -104,7 +104,23 @@ public class ServiceRepositoryImpl implements IServiceRepository {
             preparedStatement.setInt(10, service.getNumberOfFloors());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            printSQLException(e);
+        }
+    }
+
+    private void printSQLException(SQLException ex) {
+        for (Throwable e : ex) {
+            if (e instanceof SQLException) {
+                e.printStackTrace(System.err);
+                System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+                System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
+                System.err.println("Message: " + e.getMessage());
+                Throwable t = ex.getCause();
+                while (t != null) {
+                    System.out.println("Cause: " + t);
+                    t = t.getCause();
+                }
+            }
         }
     }
 }

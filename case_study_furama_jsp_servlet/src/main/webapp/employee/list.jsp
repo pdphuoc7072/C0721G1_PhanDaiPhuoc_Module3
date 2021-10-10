@@ -22,9 +22,19 @@
 <body>
 <h1>Employee Management</h1>
 <h4>
+    <a href="#">Search employee</a>
+    <ul>
+        <li>
+            <a href="/employee?action=search&search=name">Search by name</a>
+        </li>
+        <li>
+            <a href="/employee?action=search&search=phone">Search by phone</a>
+        </li>
+    </ul>
+</h4>
+<h4>
     <a href="/home">Back home</a>
 </h4>
-
 <table class="table table-striped">
     <thead>
     <tr>

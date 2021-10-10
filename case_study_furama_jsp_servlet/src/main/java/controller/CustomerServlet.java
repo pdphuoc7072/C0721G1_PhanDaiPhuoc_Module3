@@ -1,8 +1,10 @@
 package controller;
 
 import model.bean.Customer;
+import model.bean.Employee;
 import model.service.impl.CustomerServiceImpl;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customer")
@@ -30,6 +33,9 @@ public class CustomerServlet extends HttpServlet {
                     break;
                 case "edit":
                     editCustomer (request, response);
+                    break;
+                case "search":
+                    searchCustomer(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -54,6 +60,9 @@ public class CustomerServlet extends HttpServlet {
                     break;
                 case "delete":
                     deleteCustomer (request, response);
+                    break;
+                case "search":
+                    showSearchForm(request, response);
                     break;
                 default:
                     listCustomer (request, response);
@@ -145,5 +154,45 @@ public class CustomerServlet extends HttpServlet {
         customerService.updateCustomer(customer);
         request.setAttribute("message", "Update successful");
         request.getRequestDispatcher("/customer/edit.jsp").forward(request, response);
+    }
+
+    private void showSearchForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String search = request.getParameter("search");
+        request.setAttribute("search", search);
+        request.getRequestDispatcher("/customer/search.jsp").forward(request, response);
+    }
+
+    private void searchCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String searchNP = request.getParameter("search");
+        List<Customer> customerList = new ArrayList<>();
+        RequestDispatcher dispatcher;
+        switch (searchNP) {
+            case "name":
+                String searchName = request.getParameter("name");
+                customerList = customerService.searchCustomerByName(searchName);
+                if (customerList == null) {
+                    dispatcher = request.getRequestDispatcher("/error-404.jsp");
+                } else {
+                    request.setAttribute("search", searchNP);
+                    request.setAttribute("customerList", customerList);
+                    request.setAttribute("message", "Search successful");
+                    dispatcher = request.getRequestDispatcher("/customer/search-result.jsp");
+                    dispatcher.forward(request, response);
+                }
+                break;
+            case "phone":
+                String searchPhone = request.getParameter("phone");
+                customerList = customerService.searchCustomerByPhone(searchPhone);
+                if (customerList == null) {
+                    dispatcher = request.getRequestDispatcher("/error-404.jsp");
+                } else {
+                    request.setAttribute("search", searchNP);
+                    request.setAttribute("customerList", customerList);
+                    request.setAttribute("message", "Search successful");
+                    dispatcher = request.getRequestDispatcher("/customer/search-result.jsp");
+                    dispatcher.forward(request, response);
+                }
+                break;
+        }
     }
 }

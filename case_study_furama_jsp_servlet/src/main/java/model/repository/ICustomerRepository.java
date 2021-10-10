@@ -11,4 +11,6 @@ public interface ICustomerRepository {
     void insertCustomer (Customer customer) throws SQLException;
     boolean updateCustomer (Customer customer) throws SQLException;
     boolean deleteCustomer (int id) throws SQLException;
+    List<Customer> searchCustomerByName (String search);
+    List<Customer> searchCustomerByPhone (String search);
 }

@@ -3,6 +3,7 @@ package controller;
 import model.bean.Employee;
 import model.service.impl.EmployeeServiceImpl;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "EmployeeServlet", urlPatterns = "/employee")
@@ -26,10 +28,13 @@ public class EmployeeServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create":
-                    createNewEmployee (request, response);
+                    createNewEmployee(request, response);
                     break;
                 case "edit":
-                    editEmployee (request, response);
+                    editEmployee(request, response);
+                    break;
+                case "search":
+                    searchEmployee(request, response);
                     break;
             }
         } catch (SQLException e) {
@@ -47,16 +52,19 @@ public class EmployeeServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create":
-                    showCreateForm (request, response);
+                    showCreateForm(request, response);
                     break;
                 case "edit":
-                    showEditForm (request, response);
+                    showEditForm(request, response);
                     break;
                 case "delete":
-                    deleteEmployee (request, response);
+                    deleteEmployee(request, response);
+                    break;
+                case "search":
+                    showSearchForm(request, response);
                     break;
                 default:
-                    listEmployee (request, response);
+                    listEmployee(request, response);
                     break;
             }
         } catch (SQLException e) {
@@ -64,17 +72,17 @@ public class EmployeeServlet extends HttpServlet {
         }
     }
 
-    private void listEmployee (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    private void listEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         List<Employee> employeeList = employeeService.selectAllEmployees();
         request.setAttribute("employeeList", employeeList);
         request.getRequestDispatcher("employee/list.jsp").forward(request, response);
     }
 
-    private void showCreateForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         request.getRequestDispatcher("employee/create.jsp").forward(request, response);
     }
 
-    private void createNewEmployee (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    private void createNewEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
         String idCard = request.getParameter("id_card");
@@ -92,14 +100,14 @@ public class EmployeeServlet extends HttpServlet {
         request.getRequestDispatcher("employee/create.jsp").forward(request, response);
     }
 
-    private void showEditForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         Employee employee = employeeService.selectEmployee(id);
         request.setAttribute("employee", employee);
         request.getRequestDispatcher("/employee/edit.jsp").forward(request, response);
     }
 
-    private void editEmployee (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    private void editEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
@@ -169,11 +177,51 @@ public class EmployeeServlet extends HttpServlet {
         request.getRequestDispatcher("/employee/edit.jsp").forward(request, response);
     }
 
-    private void deleteEmployee (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+    private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         employeeService.deleteEmployee(id);
         List<Employee> employeeList = employeeService.selectAllEmployees();
         request.setAttribute("employeeList", employeeList);
         request.getRequestDispatcher("/employee/list.jsp").forward(request, response);
+    }
+
+    private void showSearchForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String search = request.getParameter("search");
+        request.setAttribute("search", search);
+        request.getRequestDispatcher("/employee/search.jsp").forward(request, response);
+    }
+
+    private void searchEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String searchNP = request.getParameter("search");
+        List<Employee> employeeList = new ArrayList<>();
+        RequestDispatcher dispatcher;
+        switch (searchNP) {
+            case "name":
+                String searchName = request.getParameter("name");
+                employeeList = employeeService.searchEmployeeByName(searchName);
+                if (employeeList == null) {
+                    dispatcher = request.getRequestDispatcher("/error-404.jsp");
+                } else {
+                    request.setAttribute("search", searchNP);
+                    request.setAttribute("employeeList", employeeList);
+                    request.setAttribute("message", "Search successful");
+                    dispatcher = request.getRequestDispatcher("/employee/search-result.jsp");
+                    dispatcher.forward(request, response);
+                }
+                break;
+            case "phone":
+                String searchPhone = request.getParameter("phone");
+                employeeList = employeeService.searchEmployeeByPhone(searchPhone);
+                if (employeeList == null) {
+                    dispatcher = request.getRequestDispatcher("/error-404.jsp");
+                } else {
+                    request.setAttribute("search", searchNP);
+                    request.setAttribute("employeeList", employeeList);
+                    request.setAttribute("message", "Search successful");
+                    dispatcher = request.getRequestDispatcher("/employee/search-result.jsp");
+                    dispatcher.forward(request, response);
+                }
+                break;
+        }
     }
 }
