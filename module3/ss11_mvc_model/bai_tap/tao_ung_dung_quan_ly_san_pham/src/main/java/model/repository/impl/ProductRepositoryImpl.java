@@ -1,10 +1,11 @@
-package service;
+package model.repository.impl;
 
-import model.Product;
+import model.bean.Product;
+import model.repository.IProductRepository;
 
 import java.util.*;
 
-public class ProductServiceImpl implements ProductService {
+public class ProductRepositoryImpl implements IProductRepository {
     private static Map<Integer, Product> productList = new HashMap<>();
 
     static {

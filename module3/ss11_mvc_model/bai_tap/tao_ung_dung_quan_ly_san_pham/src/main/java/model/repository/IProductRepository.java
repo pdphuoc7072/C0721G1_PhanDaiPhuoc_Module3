@@ -1,10 +1,10 @@
-package service;
+package model.repository;
 
-import model.Product;
+import model.bean.Product;
 
 import java.util.List;
 
-public interface ProductService {
+public interface IProductRepository {
     List<Product> findAll ();
     void save (Product product);
     void update (int id, Product product);
