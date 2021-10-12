@@ -5,6 +5,8 @@ import model.repository.DBConnection;
 import model.repository.IContractRepository;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +32,12 @@ public class ContractRepositoryImpl implements IContractRepository {
                 preparedStatement.setInt(1, id);
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    String startDate = resultSet.getString("contract_start_date");
-                    String endDate = resultSet.getString("contract_end_date");
+                    String startDateSQL = resultSet.getString("contract_start_date");
+                    String startDate = new SimpleDateFormat("dd-MM-yyyy").format
+                            (new SimpleDateFormat("yyyy-MM-dd").parse(startDateSQL));
+                    String endDateSQL = resultSet.getString("contract_end_date");
+                    String endDate = new SimpleDateFormat("dd-MM-yyyy").format
+                            (new SimpleDateFormat("yyyy-MM-dd").parse(endDateSQL));
                     double deposit = resultSet.getDouble("contract_deposit");
                     double totalMoney = resultSet.getDouble("contract_total_money");
                     int employeeId = resultSet.getInt("employee_id");
@@ -39,7 +45,7 @@ public class ContractRepositoryImpl implements IContractRepository {
                     int serviceId = resultSet.getInt("service_id");
                     contract = new Contract(id, startDate, endDate, deposit, totalMoney, employeeId, customerId, serviceId);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -68,8 +74,12 @@ public class ContractRepositoryImpl implements IContractRepository {
                 Contract contract = null;
                 while (resultSet.next()) {
                     int id = resultSet.getInt("contract_id");
-                    String startDate = resultSet.getString("contract_start_date");
-                    String endDate = resultSet.getString("contract_end_date");
+                    String startDateSQL = resultSet.getString("contract_start_date");
+                    String startDate = new SimpleDateFormat("dd-MM-yyyy").format
+                            (new SimpleDateFormat("yyyy-MM-dd").parse(startDateSQL));
+                    String endDateSQL = resultSet.getString("contract_end_date");
+                    String endDate = new SimpleDateFormat("dd-MM-yyyy").format
+                            (new SimpleDateFormat("yyyy-MM-dd").parse(endDateSQL));
                     double deposit = resultSet.getDouble("contract_deposit");
                     double totalMoney = resultSet.getDouble("contract_total_money");
                     int employeeId = resultSet.getInt("employee_id");
@@ -78,7 +88,7 @@ public class ContractRepositoryImpl implements IContractRepository {
                     contract = new Contract(id, startDate, endDate, deposit, totalMoney, employeeId, customerId, serviceId);
                     contractList.add(contract);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -101,14 +111,18 @@ public class ContractRepositoryImpl implements IContractRepository {
         if (connection != null) {
             try {
                 preparedStatement = connection.prepareStatement(INSERT_CONTRACT_SQL);
-                preparedStatement.setString(1, contract.getStartDate());
-                preparedStatement.setString(2, contract.getEndDate());
+                preparedStatement.setString(1, new SimpleDateFormat("yyyy-MM-dd").format
+                        (new SimpleDateFormat("dd-MM-yyyy").parse(contract.getStartDate())));
+                preparedStatement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format
+                        (new SimpleDateFormat("dd-MM-yyyy").parse(contract.getEndDate())));
                 preparedStatement.setDouble(3, contract.getDeposit());
                 preparedStatement.setDouble(4, contract.getTotalMoney());
                 preparedStatement.setInt(5, contract.getEmployeeId());
                 preparedStatement.setInt(6, contract.getCustomerId());
                 preparedStatement.setInt(7, contract.getServiceId());
                 preparedStatement.executeUpdate();
+            } catch (ParseException e) {
+                e.printStackTrace();
             } catch (SQLException e) {
                 printSQLException(e);
             } finally {

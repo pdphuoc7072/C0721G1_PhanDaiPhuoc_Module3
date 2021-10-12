@@ -3,9 +3,10 @@ package model.repository.impl;
 import model.bean.Employee;
 import model.repository.DBConnection;
 import model.repository.IEmployeeRepository;
-import model.service.IEmployeeService;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,8 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     String name = resultSet.getString("employee_name");
-                    String birthday = resultSet.getString("employee_birthday");
+                    String birthdaySQL = resultSet.getString("employee_birthday");
+                    String birthday = new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(birthdaySQL));
                     String idCard = resultSet.getString("employee_id_card");
                     double salary = resultSet.getDouble("employee_salary");
                     String phone = resultSet.getString("employee_phone");
@@ -52,7 +54,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                     String username = resultSet.getString("username");
                     employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -82,7 +84,8 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 while (resultSet.next()) {
                     int id = resultSet.getInt("employee_id");
                     String name = resultSet.getString("employee_name");
-                    String birthday = resultSet.getString("employee_birthday");
+                    String birthdaySQL = resultSet.getString("employee_birthday");
+                    String birthday = new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(birthdaySQL));
                     String idCard = resultSet.getString("employee_id_card");
                     double salary = resultSet.getDouble("employee_salary");
                     String phone = resultSet.getString("employee_phone");
@@ -95,7 +98,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                     employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
                     employeeList.add(employee);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -119,7 +122,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
             try {
                 preparedStatement = connection.prepareStatement(INSERT_EMPLOYEE_SQL);
                 preparedStatement.setString(1, employee.getName());
-                preparedStatement.setString(2, employee.getBirthday());
+                preparedStatement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("dd-MM-yyyy").parse(employee.getBirthday())));
                 preparedStatement.setString(3, employee.getIdCard());
                 preparedStatement.setDouble(4, employee.getSalary());
                 preparedStatement.setString(5, employee.getPhone());
@@ -130,6 +133,8 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 preparedStatement.setInt(10, employee.getDivisionId());
                 preparedStatement.setString(11, employee.getUsername());
                 preparedStatement.executeUpdate();
+            } catch (ParseException e) {
+                e.printStackTrace();
             } catch (SQLException e) {
                 printSQLException(e);
             } finally {
@@ -153,7 +158,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
             try {
                 preparedStatement = connection.prepareStatement(UPDATE_EMPLOYEE_SQL);
                 preparedStatement.setString(1, employee.getName());
-                preparedStatement.setString(2, employee.getBirthday());
+                preparedStatement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("dd-MM-yyyy").parse(employee.getBirthday())));
                 preparedStatement.setString(3, employee.getIdCard());
                 preparedStatement.setDouble(4, employee.getSalary());
                 preparedStatement.setString(5, employee.getPhone());
@@ -166,7 +171,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 preparedStatement.setInt(12, employee.getId());
                 rowUpdated = preparedStatement.executeUpdate() > 0;
                 return rowUpdated;
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -223,7 +228,8 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 while (resultSet.next()) {
                     int id = resultSet.getInt("employee_id");
                     String name = resultSet.getString("employee_name");
-                    String birthday = resultSet.getString("employee_birthday");
+                    String birthdaySQL = resultSet.getString("employee_birthday");
+                    String birthday = new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(birthdaySQL));
                     String idCard = resultSet.getString("employee_id_card");
                     double salary = resultSet.getDouble("employee_salary");
                     String phone = resultSet.getString("employee_phone");
@@ -236,7 +242,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                     employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
                     employeeList.add(employee);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {
@@ -268,7 +274,8 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 while (resultSet.next()) {
                     int id = resultSet.getInt("employee_id");
                     String name = resultSet.getString("employee_name");
-                    String birthday = resultSet.getString("employee_birthday");
+                    String birthdaySQL = resultSet.getString("employee_birthday");
+                    String birthday = new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(birthdaySQL));
                     String idCard = resultSet.getString("employee_id_card");
                     double salary = resultSet.getDouble("employee_salary");
                     String phone = resultSet.getString("employee_phone");
@@ -281,7 +288,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                     employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
                     employeeList.add(employee);
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             } finally {
                 try {

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IServiceDetailService {
     List<ServiceDetail> selectAllServiceDetail ();
+    List<ServiceDetail> selectServiceDetailById (int id);
 }

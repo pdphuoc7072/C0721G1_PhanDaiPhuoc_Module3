@@ -13,4 +13,9 @@ public class ServiceDetailServiceImpl implements IServiceDetailService {
     public List<ServiceDetail> selectAllServiceDetail() {
         return serviceDetailRepository.selectAllServiceDetail();
     }
+
+    @Override
+    public List<ServiceDetail> selectServiceDetailById(int id) {
+        return serviceDetailRepository.selectServiceDetailById(id);
+    }
 }

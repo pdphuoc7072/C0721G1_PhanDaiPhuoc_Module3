@@ -28,25 +28,19 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Id</th>
         <th>Contract Id</th>
-        <th>Attach service</th>
+        <th>Contract Detail Id</th>
+        <th>Attach Service Name</th>
         <th>Quantity</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${requestScope['contractDetailList']}" var="contract_detail">
+    <c:forEach items="${requestScope['serviceDetailListById']}" var="serviceDetail">
         <tr>
-            <td>${contract_detail.id}</td>
-            <td>${contract_detail.contractId}</td>
-            <td>
-                <c:forEach items="${requestScope['attachServiceList']}" var="attach_service">
-                    <c:if test="${contract_detail.attachServiceId == attach_service.id}">
-                        ${attach_service.name}
-                    </c:if>
-                </c:forEach>
-            </td>
-            <td>${contract_detail.quantity}</td>
+            <td>${serviceDetail.contractId}</td>
+            <td>${serviceDetail.contractDetailId}</td>
+            <td>${serviceDetail.attachServiceName}</td>
+            <td>${serviceDetail.quantity}</td>
         </tr>
     </c:forEach>
     </tbody>

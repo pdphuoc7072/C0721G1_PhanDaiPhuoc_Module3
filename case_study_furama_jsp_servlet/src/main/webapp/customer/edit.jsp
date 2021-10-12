@@ -17,7 +17,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 </head>
 <body>
 <h1>Customer Management</h1>
@@ -48,7 +50,7 @@
                     <label class="col-form-label">Name</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" class="form-control" name="name" value="${requestScope["customer"].name}">
+                    <input type="text" class="form-control" name="name" value="${requestScope["customer"].name}" autocomplete="off">
                 </div>
             </div>
             <div class="row mt-2">
@@ -56,7 +58,7 @@
                     <label class="col-form-label">Birthday</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" class="form-control" name="birthday" value="${requestScope["customer"].birthday}">
+                    <input type="text" class="form-control" name="birthday" id="datepicker" value="${requestScope["customer"].birthday}" autocomplete="off">
                 </div>
             </div>
             <div class="row mt-2">
@@ -82,7 +84,7 @@
                     <label class="col-form-label">Id card</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" class="form-control" name="id_card" value="${requestScope["customer"].idCard}">
+                    <input type="text" class="form-control" name="id_card" value="${requestScope["customer"].idCard}" autocomplete="off">
                 </div>
             </div>
             <div class="row mt-2">
@@ -90,7 +92,7 @@
                     <label class="col-form-label">Phone</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" class="form-control" name="phone" value="${requestScope["customer"].phone}">
+                    <input type="text" class="form-control" name="phone" value="${requestScope["customer"].phone}" autocomplete="off">
                 </div>
             </div>
             <div class="row mt-2">
@@ -98,7 +100,7 @@
                     <label class="col-form-label">Email</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" class="form-control" name="email" value="${requestScope["customer"].email}">
+                    <input type="text" class="form-control" name="email" value="${requestScope["customer"].email}" autocomplete="off">
                 </div>
             </div>
             <div class="row mt-2">
@@ -106,7 +108,7 @@
                     <label class="col-form-label">Address</label>
                 </div>
                 <div class="col-8">
-                    <input type="text" class="form-control" name="address" value="${requestScope["customer"].address}">
+                    <input type="text" class="form-control" name="address" value="${requestScope["customer"].address}" autocomplete="off">
                 </div>
             </div>
             <div class="row mt-2">
@@ -170,14 +172,24 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="../static/bootstrap-4.3.1-dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+<script src="/static/jquery/jquery-3.5.1.min.js"></script>
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+<script src="/static/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/static/datatables/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+<script>
+    $( function() {
+        $( "#datepicker" ).datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange:'-120:+80'
+        });
+    } );
+</script>
 </body>
 </html>
