@@ -1,8 +1,7 @@
 package controller;
 
-import model.repository.UserRepositoryImpl;
 import model.bean.User;
-import model.service.UserServiceImpl;
+import model.service.impl.UserServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

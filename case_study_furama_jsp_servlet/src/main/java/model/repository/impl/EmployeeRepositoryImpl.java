@@ -1,6 +1,7 @@
 package model.repository.impl;
 
 import model.bean.Employee;
+import model.repository.DBConnection;
 import model.repository.IEmployeeRepository;
 import model.service.IEmployeeService;
 
@@ -9,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeRepositoryImpl implements IEmployeeRepository {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/furama_management?useSSL=false";
-    private String jdbcUsername = "root";
-    private String jdbcPassword = "Phantuankiet_1603";
 
     private static final String SELECT_ALL_EMPLOYEES = "SELECT * FROM employee";
     private static final String SELECT_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE employee_id = ?";
@@ -28,188 +26,272 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
     public EmployeeRepositoryImpl() {
     }
 
-    protected Connection getConnection() {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
     @Override
     public Employee selectEmployee(int id) {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         Employee employee = null;
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_ID);) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String name = resultSet.getString("employee_name");
-                String birthday = resultSet.getString("employee_birthday");
-                String idCard = resultSet.getString("employee_id_card");
-                double salary = resultSet.getDouble("employee_salary");
-                String phone = resultSet.getString("employee_phone");
-                String email = resultSet.getString("employee_email");
-                String address = resultSet.getString("employee_address");
-                int positionId = resultSet.getInt("position_id");
-                int educationDegreeId = resultSet.getInt("education_degree_id");
-                int divisionId = resultSet.getInt("division_id");
-                String username = resultSet.getString("username");
-                employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_ID);
+                preparedStatement.setInt(1, id);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String name = resultSet.getString("employee_name");
+                    String birthday = resultSet.getString("employee_birthday");
+                    String idCard = resultSet.getString("employee_id_card");
+                    double salary = resultSet.getDouble("employee_salary");
+                    String phone = resultSet.getString("employee_phone");
+                    String email = resultSet.getString("employee_email");
+                    String address = resultSet.getString("employee_address");
+                    int positionId = resultSet.getInt("position_id");
+                    int educationDegreeId = resultSet.getInt("education_degree_id");
+                    int divisionId = resultSet.getInt("division_id");
+                    String username = resultSet.getString("username");
+                    employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
         return employee;
     }
 
     @Override
     public List<Employee> selectAllEmployees() {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         List<Employee> employeeList = new ArrayList<>();
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_EMPLOYEES);) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("employee_id");
-                String name = resultSet.getString("employee_name");
-                String birthday = resultSet.getString("employee_birthday");
-                String idCard = resultSet.getString("employee_id_card");
-                double salary = resultSet.getDouble("employee_salary");
-                String phone = resultSet.getString("employee_phone");
-                String email = resultSet.getString("employee_email");
-                String address = resultSet.getString("employee_address");
-                int positionId = resultSet.getInt("position_id");
-                int educationDegreeId = resultSet.getInt("education_degree_id");
-                int divisionId = resultSet.getInt("division_id");
-                String username = resultSet.getString("username");
-                Employee employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-                employeeList.add(employee);
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_ALL_EMPLOYEES);
+                resultSet = preparedStatement.executeQuery();
+                Employee employee = null;
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("employee_id");
+                    String name = resultSet.getString("employee_name");
+                    String birthday = resultSet.getString("employee_birthday");
+                    String idCard = resultSet.getString("employee_id_card");
+                    double salary = resultSet.getDouble("employee_salary");
+                    String phone = resultSet.getString("employee_phone");
+                    String email = resultSet.getString("employee_email");
+                    String address = resultSet.getString("employee_address");
+                    int positionId = resultSet.getInt("position_id");
+                    int educationDegreeId = resultSet.getInt("education_degree_id");
+                    int divisionId = resultSet.getInt("division_id");
+                    String username = resultSet.getString("username");
+                    employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
+                    employeeList.add(employee);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
         return employeeList;
     }
 
     @Override
     public void insertEmployee(Employee employee) throws SQLException {
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_EMPLOYEE_SQL);) {
-            preparedStatement.setString(1, employee.getName());
-            preparedStatement.setString(2, employee.getBirthday());
-            preparedStatement.setString(3, employee.getIdCard());
-            preparedStatement.setDouble(4, employee.getSalary());
-            preparedStatement.setString(5, employee.getPhone());
-            preparedStatement.setString(6, employee.getEmail());
-            preparedStatement.setString(7, employee.getAddress());
-            preparedStatement.setInt(8, employee.getPositionId());
-            preparedStatement.setInt(9, employee.getEducationDegreeId());
-            preparedStatement.setInt(10, employee.getDivisionId());
-            preparedStatement.setString(11, employee.getUsername());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            printSQLException(e);
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(INSERT_EMPLOYEE_SQL);
+                preparedStatement.setString(1, employee.getName());
+                preparedStatement.setString(2, employee.getBirthday());
+                preparedStatement.setString(3, employee.getIdCard());
+                preparedStatement.setDouble(4, employee.getSalary());
+                preparedStatement.setString(5, employee.getPhone());
+                preparedStatement.setString(6, employee.getEmail());
+                preparedStatement.setString(7, employee.getAddress());
+                preparedStatement.setInt(8, employee.getPositionId());
+                preparedStatement.setInt(9, employee.getEducationDegreeId());
+                preparedStatement.setInt(10, employee.getDivisionId());
+                preparedStatement.setString(11, employee.getUsername());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                printSQLException(e);
+            } finally {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
     }
 
     @Override
     public boolean updateEmployee(Employee employee) throws SQLException {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
         boolean rowUpdated;
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_EMPLOYEE_SQL);) {
-            preparedStatement.setString(1, employee.getName());
-            preparedStatement.setString(2, employee.getBirthday());
-            preparedStatement.setString(3, employee.getIdCard());
-            preparedStatement.setDouble(4, employee.getSalary());
-            preparedStatement.setString(5, employee.getPhone());
-            preparedStatement.setString(6, employee.getEmail());
-            preparedStatement.setString(7, employee.getAddress());
-            preparedStatement.setInt(8, employee.getPositionId());
-            preparedStatement.setInt(9, employee.getEducationDegreeId());
-            preparedStatement.setInt(10, employee.getDivisionId());
-            preparedStatement.setString(11, employee.getUsername());
-            preparedStatement.setInt(12, employee.getId());
-            rowUpdated = preparedStatement.executeUpdate() > 0;
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(UPDATE_EMPLOYEE_SQL);
+                preparedStatement.setString(1, employee.getName());
+                preparedStatement.setString(2, employee.getBirthday());
+                preparedStatement.setString(3, employee.getIdCard());
+                preparedStatement.setDouble(4, employee.getSalary());
+                preparedStatement.setString(5, employee.getPhone());
+                preparedStatement.setString(6, employee.getEmail());
+                preparedStatement.setString(7, employee.getAddress());
+                preparedStatement.setInt(8, employee.getPositionId());
+                preparedStatement.setInt(9, employee.getEducationDegreeId());
+                preparedStatement.setInt(10, employee.getDivisionId());
+                preparedStatement.setString(11, employee.getUsername());
+                preparedStatement.setInt(12, employee.getId());
+                rowUpdated = preparedStatement.executeUpdate() > 0;
+                return rowUpdated;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
-        return rowUpdated;
+        return false;
     }
 
     @Override
     public boolean deleteEmployee(int id) throws SQLException {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
         boolean rowDeleted;
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_EMPLOYEE_SQL);) {
-            preparedStatement.setInt(1, id);
-            rowDeleted = preparedStatement.executeUpdate() > 0;
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(DELETE_EMPLOYEE_SQL);
+                preparedStatement.setInt(1, id);
+                rowDeleted = preparedStatement.executeUpdate() > 0;
+                return rowDeleted;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
-        return rowDeleted;
+        return false;
     }
 
     @Override
     public List<Employee> searchEmployeeByName(String search) {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         List<Employee> employeeList = new ArrayList<>();
-        Employee employee = null;
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_NAME);) {
-            String searchSQL = search.concat("%");
-            preparedStatement.setString(1, searchSQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("employee_id");
-                String name = resultSet.getString("employee_name");
-                String birthday = resultSet.getString("employee_birthday");
-                String idCard = resultSet.getString("employee_id_card");
-                double salary = resultSet.getDouble("employee_salary");
-                String phone = resultSet.getString("employee_phone");
-                String email = resultSet.getString("employee_email");
-                String address = resultSet.getString("employee_address");
-                int positionId = resultSet.getInt("position_id");
-                int educationDegreeId = resultSet.getInt("education_degree_id");
-                int divisionId = resultSet.getInt("division_id");
-                String username = resultSet.getString("username");
-                employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-                employeeList.add(employee);
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_NAME);
+                String searchSQL = search.concat("%");
+                preparedStatement.setString(1, searchSQL);
+                resultSet = preparedStatement.executeQuery();
+                Employee employee = null;
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("employee_id");
+                    String name = resultSet.getString("employee_name");
+                    String birthday = resultSet.getString("employee_birthday");
+                    String idCard = resultSet.getString("employee_id_card");
+                    double salary = resultSet.getDouble("employee_salary");
+                    String phone = resultSet.getString("employee_phone");
+                    String email = resultSet.getString("employee_email");
+                    String address = resultSet.getString("employee_address");
+                    int positionId = resultSet.getInt("position_id");
+                    int educationDegreeId = resultSet.getInt("education_degree_id");
+                    int divisionId = resultSet.getInt("division_id");
+                    String username = resultSet.getString("username");
+                    employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
+                    employeeList.add(employee);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return employeeList;
     }
 
     @Override
     public List<Employee> searchEmployeeByPhone(String search) {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         List<Employee> employeeList = new ArrayList<>();
-        Employee employee = null;
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_PHONE);) {
-            String searchSQL = search.concat("%");
-            preparedStatement.setString(1, searchSQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("employee_id");
-                String name = resultSet.getString("employee_name");
-                String birthday = resultSet.getString("employee_birthday");
-                String idCard = resultSet.getString("employee_id_card");
-                double salary = resultSet.getDouble("employee_salary");
-                String phone = resultSet.getString("employee_phone");
-                String email = resultSet.getString("employee_email");
-                String address = resultSet.getString("employee_address");
-                int positionId = resultSet.getInt("position_id");
-                int educationDegreeId = resultSet.getInt("education_degree_id");
-                int divisionId = resultSet.getInt("division_id");
-                String username = resultSet.getString("username");
-                employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-                employeeList.add(employee);
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_BY_PHONE);
+                String searchSQL = search.concat("%");
+                preparedStatement.setString(1, searchSQL);
+                resultSet = preparedStatement.executeQuery();
+                Employee employee = null;
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("employee_id");
+                    String name = resultSet.getString("employee_name");
+                    String birthday = resultSet.getString("employee_birthday");
+                    String idCard = resultSet.getString("employee_id_card");
+                    double salary = resultSet.getDouble("employee_salary");
+                    String phone = resultSet.getString("employee_phone");
+                    String email = resultSet.getString("employee_email");
+                    String address = resultSet.getString("employee_address");
+                    int positionId = resultSet.getInt("position_id");
+                    int educationDegreeId = resultSet.getInt("education_degree_id");
+                    int divisionId = resultSet.getInt("division_id");
+                    String username = resultSet.getString("username");
+                    employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
+                    employeeList.add(employee);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return employeeList;
     }

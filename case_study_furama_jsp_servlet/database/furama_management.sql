@@ -226,3 +226,29 @@ VALUES
 ('thivan', '123456789'),
 ('thituyet', '123456789'),
 ('vanle', '123456789');
+
+DELIMITER $$
+CREATE PROCEDURE get_service_detail ()
+BEGIN
+    SELECT 
+    sv.service_id,
+    sv.service_name,
+    cm.customer_name,
+    ct.contract_id,
+    ct.contract_start_date,
+    ct.contract_end_date,
+    cd.contract_detail_id,
+    att.attach_service_name,
+    cd.quantity
+FROM
+    contract ct
+        JOIN
+    service sv ON sv.service_id = ct.service_id
+        JOIN
+    customer cm ON cm.customer_id = ct.customer_id
+    LEFT JOIN contract_detail cd ON cd.contract_id = ct.contract_id
+    LEFT JOIN attach_service att ON att.attach_service_id = cd.attach_service_id;
+END$$
+DELIMITER ;
+
+CALL get_service_detail ();

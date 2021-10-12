@@ -1,6 +1,7 @@
 package controller;
 
 import model.bean.*;
+import model.repository.impl.ServiceDetailRepositoryImpl;
 import model.service.impl.*;
 
 import javax.servlet.ServletException;
@@ -14,11 +15,7 @@ import java.util.List;
 
 @WebServlet(name = "ServiceDetailServlet", urlPatterns = "/service-detail")
 public class ServiceDetailServlet extends HttpServlet {
-    ServiceServiceImpl serviceService = new ServiceServiceImpl();
-    CustomerServiceImpl customerService = new CustomerServiceImpl();
-    ContractServiceImpl contractService = new ContractServiceImpl();
-    ContractDetailServiceImpl contractDetailService = new ContractDetailServiceImpl();
-    AttachServiceServiceImpl attachServiceService = new AttachServiceServiceImpl();
+    ServiceDetailServiceImpl serviceDetailService = new ServiceDetailServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -45,16 +42,8 @@ public class ServiceDetailServlet extends HttpServlet {
     }
 
     private void listServiceDetail (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        List<Service> serviceList = serviceService.selectAllServices();
-        List<Customer> customerList = customerService.selectAllCustomers();
-        List<Contract> contractList = contractService.selectAllContracts();
-        List<ContractDetail> contractDetailList = contractDetailService.selectAllContractDetail();
-        List<AttachService> attachServiceList = attachServiceService.selectAllAttachService();
-        request.setAttribute("serviceList", serviceList);
-        request.setAttribute("customerList", customerList);
-        request.setAttribute("contractList", contractList);
-        request.setAttribute("contractDetailList", contractDetailList);
-        request.setAttribute("attachServiceList", attachServiceList);
+        List<ServiceDetail> serviceDetailList = serviceDetailService.selectAllServiceDetail();
+        request.setAttribute("serviceDetailList", serviceDetailList);
         request.getRequestDispatcher("/service-detail/list.jsp").forward(request, response);
     }
 }

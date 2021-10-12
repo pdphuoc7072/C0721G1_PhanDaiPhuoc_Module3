@@ -28,99 +28,66 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Id service</th>
-        <th>Name service</th>
+        <th>Service Id</th>
+        <th>Service name</th>
         <th>Customer name</th>
-        <th>Id contract</th>
+        <th>Contract Id</th>
         <th>Contract of start date</th>
         <th>Contract of end date</th>
-        <th>Contract detail</th>
+        <th>Contract Detail</th>
         <th colspan="2">Actions</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${requestScope['serviceList']}" var="service">
-        <c:forEach items="${requestScope['contractList']}" var="contract">
-            <tr>
-                <td>
-                    <c:if test="${service.id == contract.serviceId}">
-                        ${service.id}
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${service.id == contract.serviceId}">
-                        ${service.name}
-                    </c:if>
-                </td>
-                <td>
-                    <c:forEach items="${requestScope['customerList']}" var="customer">
-                        <c:choose>
-                            <c:when test="${contract.customerId == customer.id && service.id == contract.serviceId}">
-                                ${customer.name}
-                            </c:when>
-                        </c:choose>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:if test="${service.id == contract.serviceId}">
-                        ${contract.id}
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${service.id == contract.serviceId}">
-                        ${contract.startDate}
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${service.id == contract.serviceId}">
-                        ${contract.endDate}
-                    </c:if>
-                </td>
-                <td>
-                    <c:forEach items="${requestScope['contractDetailList']}" var="contractDetail">
-                        <c:if test="${contract.id == contractDetail.contractId && service.id == contract.serviceId}">
-                            <a href = "<c:url value = "/service-contract-detail?action=show&id=${contract.id}"/>">Hợp đồng chi tiết</a>
-                        </c:if>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:if test="${service.id == contract.serviceId}">
-                        <a href = "<c:url value = "/service-detail?action=edit&id=${contract.id}"/>">Edit</a>
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${service.id == contract.serviceId}">
-                        <button onclick="onDelete(${contract.id})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-                            Delete
-                        </button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form action="/service-detail">
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="id" value="" id="idContractDel">
-                                        <div class="modal-body">
-                                            Are you sure to delete this contract?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Yes</button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                                        </div>
-                                    </form>
-
-                                </div>
+    <c:forEach items="${requestScope['serviceDetailList']}" var="serviceDetail">
+        <tr>
+            <td>${serviceDetail.serviceId}</td>
+            <td>${serviceDetail.serviceName}</td>
+            <td>${serviceDetail.customerName}</td>
+            <td>${serviceDetail.contractId}</td>
+            <td>${serviceDetail.contractOfStartDate}</td>
+            <td>${serviceDetail.contractOfEndDate}</td>
+            <td>
+                <c:if test="${serviceDetail.contractDetailId != 0}">
+                    <a href = "<c:url value = "/service-contract-detail?action=show&id=${serviceDetail.contractId}"/>">Hợp đồng chi tiết</a>
+                </c:if>
+            </td>
+            <td>
+                <a href="<c:url value = "/service-detail?action=edit&id=${serviceDetail.contractId}"/>">Edit</a>
+            </td>
+            <td>
+                <button onclick="onDelete(${serviceDetail.contractId})" type="button" class="btn btn-danger"
+                        data-toggle="modal"
+                        data-target="#exampleModal">
+                    Delete
+                </button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
+                            <form action="/service-detail">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="" id="idContractDel">
+                                <div class="modal-body">
+                                    Are you sure to delete this contract?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                </div>
+                            </form>
+
                         </div>
-                    </c:if>
-                </td>
-            </tr>
-        </c:forEach>
+                    </div>
+                </div>
+            </td>
+        </tr>
     </c:forEach>
     </tbody>
 </table>

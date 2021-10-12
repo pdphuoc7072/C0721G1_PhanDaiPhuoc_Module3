@@ -1,6 +1,7 @@
 package model.repository.impl;
 
 import model.bean.ContractDetail;
+import model.repository.DBConnection;
 import model.repository.IContractDetailRepository;
 
 import java.sql.*;
@@ -8,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContractDetailRepositoryImpl implements IContractDetailRepository {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/furama_management?useSSL=false";
-    private String jdbcUsername = "root";
-    private String jdbcPassword = "Phantuankiet_1603";
 
     private static final String SELECT_ALL_CONTRACT_DETAIL = "SELECT * FROM contract_detail";
     private static final String SELECT_CONTRACT_DETAIL_BY_ID = "SELECT * FROM contract_detail WHERE contract_detail_id = ?";
@@ -20,70 +18,96 @@ public class ContractDetailRepositoryImpl implements IContractDetailRepository {
 
     public ContractDetailRepositoryImpl() {}
 
-    protected Connection getConnection () {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
     @Override
     public ContractDetail selectContractDetail(int id) {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         ContractDetail contractDetail = null;
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CONTRACT_DETAIL_BY_ID);) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int contractId = resultSet.getInt("contract_id");
-                int attachServiceId = resultSet.getInt("attach_service_id");
-                int quantity = resultSet.getInt("quantity");
-                contractDetail = new ContractDetail(id, contractId, attachServiceId, quantity);
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_CONTRACT_DETAIL_BY_ID);
+                preparedStatement.setInt(1, id);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    int contractId = resultSet.getInt("contract_id");
+                    int attachServiceId = resultSet.getInt("attach_service_id");
+                    int quantity = resultSet.getInt("quantity");
+                    contractDetail = new ContractDetail(id, contractId, attachServiceId, quantity);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
         return contractDetail;
     }
 
     @Override
     public List<ContractDetail> selectAllContractDetail() {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         List<ContractDetail> contractDetailList = new ArrayList<>();
-        try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CONTRACT_DETAIL);) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int contractDetailId = resultSet.getInt("contract_detail_id");
-                int contractId = resultSet.getInt("contract_id");
-                int attachServiceId = resultSet.getInt("attach_service_id");
-                int quantity = resultSet.getInt("quantity");
-                ContractDetail contractDetail = new ContractDetail(contractDetailId, contractId, attachServiceId, quantity);
-                contractDetailList.add(contractDetail);
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_ALL_CONTRACT_DETAIL);
+                resultSet = preparedStatement.executeQuery();
+                ContractDetail contractDetail = null;
+                while (resultSet.next()) {
+                    int contractDetailId = resultSet.getInt("contract_detail_id");
+                    int contractId = resultSet.getInt("contract_id");
+                    int attachServiceId = resultSet.getInt("attach_service_id");
+                    int quantity = resultSet.getInt("quantity");
+                    contractDetail = new ContractDetail(contractDetailId, contractId, attachServiceId, quantity);
+                    contractDetailList.add(contractDetail);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
         return contractDetailList;
     }
 
     @Override
     public void insertContractDetail(ContractDetail contractDetail) throws SQLException {
-        try (Connection connection = getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CONTRACT_DETAIL_SQL);) {
-            preparedStatement.setInt(1, contractDetail.getContractId());
-            preparedStatement.setInt(2, contractDetail.getAttachServiceId());
-            preparedStatement.setInt(3, contractDetail.getQuantity());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            printSQLException(e);
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(INSERT_CONTRACT_DETAIL_SQL);
+                preparedStatement.setInt(1, contractDetail.getContractId());
+                preparedStatement.setInt(2, contractDetail.getAttachServiceId());
+                preparedStatement.setInt(3, contractDetail.getQuantity());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                printSQLException(e);
+            } finally {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
     }
 
@@ -104,21 +128,35 @@ public class ContractDetailRepositoryImpl implements IContractDetailRepository {
     }
 
     public List<ContractDetail> selectContractDetailByContractId (int id) {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         List<ContractDetail> contractDetailList = new ArrayList<>();
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CONTRACT_DETAIL_BY_CONTRACT_ID);) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int contractDetailId = resultSet.getInt("contract_detail_id");
-                int attachServiceId = resultSet.getInt("attach_service_id");
-                int quantity = resultSet.getInt("quantity");
-                ContractDetail contractDetail = new ContractDetail(contractDetailId, id, attachServiceId, quantity);
-                contractDetailList.add(contractDetail);
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_CONTRACT_DETAIL_BY_CONTRACT_ID);
+                preparedStatement.setInt(1, id);
+                resultSet = preparedStatement.executeQuery();
+                ContractDetail contractDetail = null;
+                while (resultSet.next()) {
+                    int contractDetailId = resultSet.getInt("contract_detail_id");
+                    int attachServiceId = resultSet.getInt("attach_service_id");
+                    int quantity = resultSet.getInt("quantity");
+                    contractDetail = new ContractDetail(contractDetailId, id, attachServiceId, quantity);
+                    contractDetailList.add(contractDetail);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
         }
         return contractDetailList;
     }
