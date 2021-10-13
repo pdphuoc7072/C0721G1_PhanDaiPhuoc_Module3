@@ -2,6 +2,7 @@ package controller;
 
 import model.bean.Customer;
 import model.bean.Employee;
+import model.bean.User;
 import model.service.impl.CustomerServiceImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -75,11 +77,17 @@ public class CustomerServlet extends HttpServlet {
 
     private void listCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         List<Customer> customerList = customerService.selectAllCustomers();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.setAttribute("customerList", customerList);
         request.getRequestDispatcher("customer/list.jsp").forward(request, response);
     }
 
     private void showCreateForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.getRequestDispatcher("customer/create.jsp").forward(request, response);
     }
 
@@ -107,6 +115,9 @@ public class CustomerServlet extends HttpServlet {
     private void showEditForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         Customer customer = customerService.selectCustomer(id);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.setAttribute("customer", customer);
         request.getRequestDispatcher("/customer/edit.jsp").forward(request, response);
     }
@@ -158,6 +169,9 @@ public class CustomerServlet extends HttpServlet {
 
     private void showSearchForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         String search = request.getParameter("search");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.setAttribute("search", search);
         request.getRequestDispatcher("/customer/search.jsp").forward(request, response);
     }

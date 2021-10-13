@@ -28,15 +28,16 @@
         <div class="row">
             <div class="col-md-5 mx-auto">
                 <div class="card card-body">
-                    <form id="submitForm" action="/home" method="post">
+                    <p class="text-danger">${message}</p>
+                    <form id="submitForm" action="/login" method="post">
                         <div class="form-group">
                             <label for="username"> Username </label>
-                            <input type="text" class="form-control" id="username" name="username" autocomplete="off" required>
+                            <input type="text" class="form-control" id="username" name="username" value="${userNameCookie}" autocomplete="off" required>
                         </div>
                         <div class="form-group">
                             <label class="d-flex flex-row align-items-center" for="password"> Password
                                 <a class="ml-auto border-link small-xl" href="#"> Forget Password? </a> </label>
-                            <input type="password" class="form-control" id="password" name="password" autocomplete="off" required>
+                            <input type="password" class="form-control" id="password" name="password" value="${passwordCookie}" autocomplete="off" required>
                         </div>
                         <div class="form-group mt-4 mb-4">
                             <div class="custom-control custom-checkbox">

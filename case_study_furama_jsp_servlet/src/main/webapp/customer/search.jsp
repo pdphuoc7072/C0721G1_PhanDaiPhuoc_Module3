@@ -20,7 +20,17 @@
     <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Search customer by <c:out value="${search}"></c:out></h1>
+<div class="row">
+    <div class="col-8">
+        <h1>Search customer by <c:out value="${search}"></c:out></h1>
+    </div>
+    <div class="col-4">
+        <div>
+            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+        </div>
+    </div>
+</div>
+
 <h3>
     <a href="/customer">Back to list all customers</a>
 </h3>

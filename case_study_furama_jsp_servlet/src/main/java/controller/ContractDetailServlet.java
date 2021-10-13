@@ -3,6 +3,7 @@ package controller;
 import model.bean.AttachService;
 import model.bean.Contract;
 import model.bean.ContractDetail;
+import model.bean.User;
 import model.service.impl.AttachServiceServiceImpl;
 import model.service.impl.ContractDetailServiceImpl;
 import model.service.impl.ContractServiceImpl;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -66,6 +68,9 @@ public class ContractDetailServlet extends HttpServlet {
         List<AttachService> attachServiceList = attachServiceService.selectAllAttachService();
         request.setAttribute("contractDetailList", contractDetailList);
         request.setAttribute("attachServiceList", attachServiceList);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/contract-detail/list.jsp").forward(request, response);
     }
 
@@ -74,6 +79,9 @@ public class ContractDetailServlet extends HttpServlet {
         List<AttachService> attachServiceList = attachServiceService.selectAllAttachService();
         request.setAttribute("contractList", contractList);
         request.setAttribute("attachServiceList", attachServiceList);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/contract-detail/create.jsp").forward(request, response);
     }
 

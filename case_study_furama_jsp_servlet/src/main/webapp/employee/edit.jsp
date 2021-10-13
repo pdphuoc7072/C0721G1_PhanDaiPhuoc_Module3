@@ -22,7 +22,16 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 </head>
 <body>
-<h1>Employee Management</h1>
+<div class="row">
+    <div class="col-8">
+        <h1>Employee Management</h1>
+    </div>
+    <div class="col-4">
+        <div>
+            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+        </div>
+    </div>
+</div>
 <h4>
     <a href="/employee">Back to list all employees</a>
 </h4>

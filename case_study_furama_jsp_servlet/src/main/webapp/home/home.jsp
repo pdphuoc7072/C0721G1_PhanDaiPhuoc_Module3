@@ -34,13 +34,29 @@
                 </div>
             </header>
         </div>
-        <div class="col-2">
+        <div class="col-3">
         </div>
-        <div class="col-4">
-            <div>
-                <p class="navbar-text" style="float: right"><a href="/login">Login</a></p>
+
+        <c:if test="${sessionScope.user == null}">
+            <div class="col-3">
+                <div>
+                    <p class="navbar-text" style="float: right"><a href="/login">Login</a></p>
+                </div>
             </div>
-        </div>
+        </c:if>
+        <c:if test="${sessionScope.user != null}">
+            <div class="col-2">
+                <div>
+                    <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <a class="navbar-text" style="float:right" href="/logout">Logout</a>
+                </div>
+            </div>
+        </c:if>
+
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-success sticky-top">
@@ -64,7 +80,9 @@
                         Employee
                     </a>
                     <div class="dropdown-menu" aria-labelledby="Employee">
-                        <a class="dropdown-item" href="/employee?action=create">Create new employee</a>
+                        <c:if test="${sessionScope.user.roleId == 1}">
+                            <a class="dropdown-item" href="/employee?action=create">Create new employee</a>
+                        </c:if>
                         <a class="dropdown-item" href="/employee">Show list all employees</a>
                     </div>
                 </li>

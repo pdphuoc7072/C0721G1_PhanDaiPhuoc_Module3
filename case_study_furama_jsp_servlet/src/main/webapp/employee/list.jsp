@@ -21,7 +21,17 @@
 
 </head>
 <body>
-<h1>Employee Management</h1>
+<div class="row">
+    <div class="col-8">
+        <h1>Employee Management</h1>
+    </div>
+    <div class="col-4">
+        <div>
+            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+        </div>
+    </div>
+</div>
+
 <h4>
     <a href="#">Search employee</a>
     <ul>
@@ -94,42 +104,45 @@
             </td>
             <td>${employee.username}</td>
             <td>
-                <a href="/employee?action=edit&id=${employee.id}">Edit</a>
+                <c:if test="${sessionScope.user.roleId == 1}">
+                    <a href="/employee?action=edit&id=${employee.id}">Edit</a>
+                </c:if>
             </td>
             <td>
-                <button onclick="onDelete(${employee.getId()})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-                    Delete
-                </button>
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form action="/employee">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="id" value="" id="idEmployeeDel">
-                                <div class="modal-body">
-                                    Are you sure to delete this employee?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Yes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
+                <c:if test="${sessionScope.user.roleId == 1}">
+                    <button onclick="onDelete(${employee.getId()})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                        Delete
+                    </button>
+                </c:if>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/employee">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="id" value="" id="idEmployeeDel">
+                <div class="modal-body">
+                    Are you sure to delete this employee?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </form>
 
+        </div>
+    </div>
+</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="/static/jquery/jquery-3.5.1.min.js"></script>

@@ -1,9 +1,6 @@
 package controller;
 
-import model.bean.Contract;
-import model.bean.Customer;
-import model.bean.Employee;
-import model.bean.Service;
+import model.bean.*;
 import model.service.impl.ContractServiceImpl;
 import model.service.impl.CustomerServiceImpl;
 import model.service.impl.EmployeeServiceImpl;
@@ -14,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -73,6 +71,9 @@ public class ContractServlet extends HttpServlet {
         request.setAttribute("employeeList", employeeList);
         request.setAttribute("customerList", customerList);
         request.setAttribute("serviceList", serviceList);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/contract/list.jsp").forward(request, response);
     }
     private void showCreateForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
@@ -82,6 +83,9 @@ public class ContractServlet extends HttpServlet {
         request.setAttribute("employeeList", employeeList);
         request.setAttribute("customerList", customerList);
         request.setAttribute("serviceList", serviceList);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/contract/create.jsp").forward(request, response);
     }
     private void createNewContract (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {

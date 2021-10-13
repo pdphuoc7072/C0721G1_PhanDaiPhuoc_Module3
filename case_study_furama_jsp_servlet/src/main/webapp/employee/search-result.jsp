@@ -20,7 +20,16 @@
     <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Search employee by <c:out value="${search}"></c:out></h1>
+<div class="row">
+    <div class="col-8">
+        <h1>Search employee by <c:out value="${search}"></c:out></h1>
+    </div>
+    <div class="col-4">
+        <div>
+            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+        </div>
+    </div>
+</div>
 <c:if test="${empty employeeList}">
     <h3 style="color: red">No results were found</h3>
     <h3>
