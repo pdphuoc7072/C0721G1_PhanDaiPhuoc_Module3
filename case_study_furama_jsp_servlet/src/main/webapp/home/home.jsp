@@ -38,7 +38,7 @@
         </div>
         <div class="col-4">
             <div>
-                <p class="navbar-text" style="float: right">Signed in as Thomas</p>
+                <p class="navbar-text" style="float: right"><a href="/login">Login</a></p>
             </div>
         </div>
     </div>

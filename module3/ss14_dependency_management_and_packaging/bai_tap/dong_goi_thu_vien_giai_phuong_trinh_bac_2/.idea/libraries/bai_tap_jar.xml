@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="bai_tap_jar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../bai_tap_jar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../bai_tap_jar" recursive="false" />
+  </library>
+</component>
