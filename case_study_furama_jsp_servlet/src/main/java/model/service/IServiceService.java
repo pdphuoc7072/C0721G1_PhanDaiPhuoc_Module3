@@ -8,5 +8,5 @@ import java.util.List;
 public interface IServiceService {
     Service selectService (int id);
     List<Service> selectAllServices ();
-    void insertService (Service service) throws SQLException;
+    boolean insertService (Service service) throws SQLException;
 }

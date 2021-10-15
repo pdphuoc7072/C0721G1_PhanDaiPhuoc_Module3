@@ -22,148 +22,155 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Employee Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/employee" class="btn btn-dark">Back to list all employees</a>
+            <div class="row">
+                <h4>
+                    <c:if test='${requestScope["message1"] != null}'>
+                        <span class="message">${requestScope["message1"]}</span>
+                    </c:if>
+                </h4>
+                <h4>
+                    <c:if test='${requestScope["message2"] != null}'>
+                        <span class="message text-danger">${requestScope["message2"]}</span>
+                    </c:if>
+                </h4>
+            </div>
+            <form method="post">
+                <legend>Employee information</legend>
+                <div class="row mt-2">
+                    <div class="col-5">
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Name</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="name" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Birthday</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="birthday" id="datepicker" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Id card</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="id_card" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Salary</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="salary" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Phone</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="phone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Email</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="email" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Address</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="address" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Position</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="position_id">
+                                    <option selected>Chọn vị trí</option>
+                                    <option value="1">Lễ tân</option>
+                                    <option value="2">Phục vụ</option>
+                                    <option value="3">Chuyên viên</option>
+                                    <option value="4">Giám sát</option>
+                                    <option value="5">Quản lý</option>
+                                    <option value="6">Giám đốc</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Education degree</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="education_degree_id">
+                                    <option selected>Chọn trình độ</option>
+                                    <option value="1">Trung cấp</option>
+                                    <option value="2">Cao đẳng</option>
+                                    <option value="3">Đại học</option>
+                                    <option value="4">Sau đại học</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Division</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="division_id">
+                                    <option selected>Chọn bộ phận</option>
+                                    <option value="1">Sale - Marketing</option>
+                                    <option value="2">Hành chính</option>
+                                    <option value="3">Phục vụ</option>
+                                    <option value="4">Quản lý</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Username</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="username" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-6">
+                                <input type="submit" class="form-control" value="Create new employee">
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<h4>
-    <a href="/employee">Back to list all employees</a>
-</h4>
-<h4>
-    <c:if test='${requestScope["message"] != null}'>
-        <span class="message">${requestScope["message"]}</span>
-    </c:if>
-</h4>
-<form method="post">
-    <legend>Employee information</legend>
-    <div class="row mt-2">
-        <div class="col-5">
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Name</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="name" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Birthday</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="birthday" id="datepicker" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Id card</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="id_card" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Salary</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="salary" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Phone</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="phone" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Email</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="email" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Address</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="address" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Position</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="position_id">
-                        <option selected>Chọn vị trí</option>
-                        <option value="1">Lễ tân</option>
-                        <option value="2">Phục vụ</option>
-                        <option value="3">Chuyên viên</option>
-                        <option value="4">Giám sát</option>
-                        <option value="5">Quản lý</option>
-                        <option value="6">Giám đốc</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Education degree</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="education_degree_id">
-                        <option selected>Chọn trình độ</option>
-                        <option value="1">Trung cấp</option>
-                        <option value="2">Cao đẳng</option>
-                        <option value="3">Đại học</option>
-                        <option value="4">Sau đại học</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Division</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="division_id">
-                        <option selected>Chọn bộ phận</option>
-                        <option value="1">Sale - Marketing</option>
-                        <option value="2">Hành chính</option>
-                        <option value="3">Phục vụ</option>
-                        <option value="4">Quản lý</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Username</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="username" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                </div>
-                <div class="col-6">
-                    <input type="submit" class="form-control" value="Create new employee">
-                </div>
-                <div class="col-2">
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+<jsp:include page="../common/footer.jsp"></jsp:include>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

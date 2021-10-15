@@ -19,7 +19,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="/static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 
-    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 </head>
 <body>
 <div class="pt-5">
@@ -32,12 +33,21 @@
                     <form id="submitForm" action="/login" method="post">
                         <div class="form-group">
                             <label for="username"> Username </label>
-                            <input type="text" class="form-control" id="username" name="username" value="${userNameCookie}" autocomplete="off" required>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="username" name="username" value="${userNameCookie}" autocomplete="off" required>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="d-flex flex-row align-items-center" for="password"> Password
-                                <a class="ml-auto border-link small-xl" href="#"> Forget Password? </a> </label>
-                            <input type="password" class="form-control" id="password" name="password" value="${passwordCookie}" autocomplete="off" required>
+                            <label class="d-flex flex-row align-items-center" for="password">Password</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                </div>
+                                <input type="password" class="form-control" id="password" name="password" value="${passwordCookie}" autocomplete="off" required>
+                            </div>
                         </div>
                         <div class="form-group mt-4 mb-4">
                             <div class="custom-control custom-checkbox">
@@ -49,10 +59,14 @@
                             <button class="btn btn-primary btn-block" type="submit"> Log In </button>
                         </div>
                     </form>
-                    <p class="small-xl pt-3 text-center">
-                        <span class="text-muted"> Not a member? </span>
-                        <a href="#"> Sign up </a>
-                    </p>
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-center links">
+                            Don't have an account?<a href="#">Sign Up</a>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a href="#">Forgot your password?</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

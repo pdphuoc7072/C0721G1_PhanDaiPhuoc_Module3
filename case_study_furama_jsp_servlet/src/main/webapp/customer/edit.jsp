@@ -22,162 +22,177 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Customer Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
         </div>
-    </div>
-</div>
-<h4>
-    <a href="/customer">Back to list all customers</a>
-</h4>
-<h4>
-    <c:if test='${requestScope["message"] != null}'>
-        <span class="message">${requestScope["message"]}</span>
-    </c:if>
-</h4>
-<form method="post">
-    <legend>Customer information</legend>
-    <div class="row mt-2">
-        <div class="col-6">
-            <c:if test="${customer != null}">
-                <div class="row mt-2">
-                    <div class="col-4">
-                        <label class="col-form-label">Id</label>
-                    </div>
-                    <div class="col-8">
-                        <input type="text" disabled class="form-control" name="id" value="${requestScope["customer"].id}">
-                    </div>
-                </div>
-            </c:if>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Name</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="name" value="${requestScope["customer"].name}" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Birthday</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="birthday" id="datepicker" value="${requestScope["customer"].birthday}" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Gender</label>
-                </div>
-                <div class="col-8">
-                    <c:choose>
-                        <c:when test="${customer.gender == 1}">
-                            <input type="text" class="form-control" name="gender" value="Nam">
-                        </c:when>
-                        <c:when test="${customer.gender == 2}">
-                            <input type="text" class="form-control" name="gender" value="Nữ">
-                        </c:when>
-                        <c:when test="${customer.gender == 3}">
-                            <input type="text" class="form-control" name="gender" value="LGBT">
-                        </c:when>
-                    </c:choose>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Id card</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="id_card" value="${requestScope["customer"].idCard}" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Phone</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="phone" value="${requestScope["customer"].phone}" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Email</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="email" value="${requestScope["customer"].email}" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Address</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="address" value="${requestScope["customer"].address}" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Customer type</label>
-                </div>
-                <div class="col-8">
-                    <c:choose>
-                        <c:when test="${customer.customerTypeId == 1}">
-                            <input type="text" class="form-control" name="customer_type_id" value="Diamond">
-                        </c:when>
-                        <c:when test="${customer.customerTypeId == 2}">
-                            <input type="text" class="form-control" name="customer_type_id" value="Platinium">
-                        </c:when>
-                        <c:when test="${customer.customerTypeId == 3}">
-                            <input type="text" class="form-control" name="customer_type_id" value="Gold">
-                        </c:when>
-                        <c:when test="${customer.customerTypeId == 4}">
-                            <input type="text" class="form-control" name="customer_type_id" value="Silver">
-                        </c:when>
-                        <c:when test="${customer.customerTypeId == 5}">
-                            <input type="text" class="form-control" name="customer_type_id" value="Member">
-                        </c:when>
-                    </c:choose>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                </div>
-                <div class="col-8">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Update customer
-                    </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Confirm update</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+        <div class="col-10">
+            <a href="/customer" class="btn btn-dark">Back to list all customers</a>
+            <div class="row">
+                <h4>
+                    <c:if test='${requestScope["message1"] != null}'>
+                        <span class="message">${requestScope["message1"]}</span>
+                    </c:if>
+                </h4>
+                <h4>
+                    <c:if test='${requestScope["message2"] != null}'>
+                        <span class="message text-danger">${requestScope["message2"]}</span>
+                    </c:if>
+                </h4>
+            </div>
+            <form method="post">
+                <legend>Customer information</legend>
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <c:if test="${customer != null}">
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <label class="col-form-label">Id</label>
                                 </div>
-                                <div class="modal-body">
-                                    Are you sure to update this customer?
+                                <div class="col-8">
+                                    <input type="text" disabled class="form-control" name="id" value="${requestScope["customer"].id}">
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Yes</button>
-                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">No</button>
+                            </div>
+                        </c:if>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Customer code</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="customer_code" value="${requestScope["customer"].customerCode}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Name</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="name" value="${requestScope["customer"].name}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Birthday</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="birthday" id="datepicker" value="${requestScope["customer"].birthday}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Gender</label>
+                            </div>
+                            <div class="col-8">
+                                <c:choose>
+                                    <c:when test="${customer.gender == 1}">
+                                        <input type="text" class="form-control" name="gender" value="Nam">
+                                    </c:when>
+                                    <c:when test="${customer.gender == 2}">
+                                        <input type="text" class="form-control" name="gender" value="Nữ">
+                                    </c:when>
+                                    <c:when test="${customer.gender == 3}">
+                                        <input type="text" class="form-control" name="gender" value="LGBT">
+                                    </c:when>
+                                </c:choose>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Id card</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="id_card" value="${requestScope["customer"].idCard}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Phone</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="phone" value="${requestScope["customer"].phone}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Email</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="email" value="${requestScope["customer"].email}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Address</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="address" value="${requestScope["customer"].address}" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Customer type</label>
+                            </div>
+                            <div class="col-8">
+                                <c:choose>
+                                    <c:when test="${customer.customerTypeId == 1}">
+                                        <input type="text" class="form-control" name="customer_type_id" value="Diamond">
+                                    </c:when>
+                                    <c:when test="${customer.customerTypeId == 2}">
+                                        <input type="text" class="form-control" name="customer_type_id" value="Platinium">
+                                    </c:when>
+                                    <c:when test="${customer.customerTypeId == 3}">
+                                        <input type="text" class="form-control" name="customer_type_id" value="Gold">
+                                    </c:when>
+                                    <c:when test="${customer.customerTypeId == 4}">
+                                        <input type="text" class="form-control" name="customer_type_id" value="Silver">
+                                    </c:when>
+                                    <c:when test="${customer.customerTypeId == 5}">
+                                        <input type="text" class="form-control" name="customer_type_id" value="Member">
+                                    </c:when>
+                                </c:choose>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-8">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Update customer
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm update</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure to update this customer?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Yes</button>
+                                                <button type="submit" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
+<jsp:include page="../common/footer.jsp"></jsp:include>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -20,74 +20,76 @@
     <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Contract detail Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/contract-detail" class="btn btn-dark">Back to list all contracts detail</a>
+            <div class="row">
+                <h4>
+                    <c:if test='${requestScope["message1"] != null}'>
+                        <span class="message">${requestScope["message"]}</span>
+                    </c:if>
+                </h4>
+            </div>
+            <form method="post">
+                <legend>Contract detail information</legend>
+                <div class="row mt-2">
+                    <div class="col-5">
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Contract id</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="contract_id">
+                                    <option selected>Chọn id hợp đồng</option>
+                                    <c:forEach items="${requestScope['contractList']}" var="contract">
+                                        <option value="${contract.id}"><c:out value="Contract No. ${contract.id}"></c:out></option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Attach service</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="attach_service_id">
+                                    <option selected>Chọn id dịch vụ đính kèm</option>
+                                    <c:forEach items="${requestScope['attachServiceList']}" var="attachService">
+                                        <option value="${attachService.id}">${attachService.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Quantity</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="quantity" required>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-6">
+                                <input type="submit" class="form-control" value="Create new contract detail">
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<h4>
-    <a href="/contract-detail">Back to list all contract detail</a>
-</h4>
-<h4>
-    <c:if test='${requestScope["message"] != null}'>
-        <span class="message">${requestScope["message"]}</span>
-    </c:if>
-</h4>
-<form method="post">
-    <legend>Contract detail information</legend>
-    <div class="row mt-2">
-        <div class="col-5">
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Contract id</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="contract_id">
-                        <option selected>Chọn id hợp đồng</option>
-                        <c:forEach items="${requestScope['contractList']}" var="contract">
-                            <option value="${contract.id}"><c:out value="Contract No. ${contract.id}"></c:out></option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Attach service</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="attach_service_id">
-                        <option selected>Chọn id dịch vụ đính kèm</option>
-                        <c:forEach items="${requestScope['attachServiceList']}" var="attachService">
-                            <option value="${attachService.id}">${attachService.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Quantity</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="quantity">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                </div>
-                <div class="col-6">
-                    <input type="submit" class="form-control" value="Create new contract detail">
-                </div>
-                <div class="col-2">
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+<jsp:include page="../common/footer.jsp"></jsp:include>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

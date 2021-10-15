@@ -86,12 +86,18 @@ public class ContractDetailServlet extends HttpServlet {
     }
 
     private void createNewContractDetail (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        boolean check = false;
         int contractId = Integer.parseInt(request.getParameter("contract_id"));
         int attachServiceId = Integer.parseInt(request.getParameter("attach_service_id"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         ContractDetail contractDetail = new ContractDetail(contractId, attachServiceId, quantity);
-        contractDetailService.insertContractDetail(contractDetail);
-        request.setAttribute("message", "Create successful");
+        check = contractDetailService.insertContractDetail(contractDetail);
+        if (check) {
+            request.setAttribute("message", "Create successful");
+        } else {
+            request.setAttribute("message", "Create unsuccessful");
+        }
+
         request.getRequestDispatcher("/contract-detail/create.jsp").forward(request, response);
     }
 }

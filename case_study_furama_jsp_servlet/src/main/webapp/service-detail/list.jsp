@@ -21,87 +21,92 @@
 
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Service detail Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/home" class="btn btn-dark">Back home</a>
+            <div class="row">
+                <div class="col-4">
+                    <h4>List all services detail</h4>
+                </div>
+            </div>
+            <table class="table table-striped" id="tableServiceDetail">
+                <thead>
+                <tr>
+                    <th>Service Id</th>
+                    <th>Service name</th>
+                    <th>Customer name</th>
+                    <th>Contract Id</th>
+                    <th>Contract of start date</th>
+                    <th>Contract of end date</th>
+                    <th>Total</th>
+                    <th>Contract Detail</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope['serviceDetailList']}" var="serviceDetail">
+                    <tr>
+                        <td>${serviceDetail.serviceId}</td>
+                        <td>${serviceDetail.serviceName}</td>
+                        <td>${serviceDetail.customerName}</td>
+                        <td>${serviceDetail.contractId}</td>
+                        <td>${serviceDetail.contractOfStartDate}</td>
+                        <td>${serviceDetail.contractOfEndDate}</td>
+                        <td>${serviceDetail.total}</td>
+                        <td>
+                            <c:if test="${serviceDetail.contractDetailId != 0}">
+                                <a href = "<c:url value = "/service-contract-detail?action=show&id=${serviceDetail.contractId}"/>" class="btn btn-success">Contract detail</a>
+                            </c:if>
+                        </td>
+                        <td>
+                            <a href="<c:url value = "/service-detail?action=edit&id=${serviceDetail.contractId}"/>" class="btn btn-warning">Edit</a>
+                        </td>
+                        <td>
+                            <button onclick="onDelete(${serviceDetail.contractId})" type="button" class="btn btn-danger"
+                                    data-toggle="modal"
+                                    data-target="#exampleModal">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/employee">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="" id="idEmployeeDel">
+                            <div class="modal-body">
+                                Are you sure to delete this employee?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Yes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<h4>
-    <a href="/home">Back home</a>
-</h4>
-
-<table class="table table-striped" id="tableServiceDetail">
-    <thead>
-    <tr>
-        <th>Service Id</th>
-        <th>Service name</th>
-        <th>Customer name</th>
-        <th>Contract Id</th>
-        <th>Contract of start date</th>
-        <th>Contract of end date</th>
-        <th>Contract Detail</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${requestScope['serviceDetailList']}" var="serviceDetail">
-        <tr>
-            <td>${serviceDetail.serviceId}</td>
-            <td>${serviceDetail.serviceName}</td>
-            <td>${serviceDetail.customerName}</td>
-            <td>${serviceDetail.contractId}</td>
-            <td>${serviceDetail.contractOfStartDate}</td>
-            <td>${serviceDetail.contractOfEndDate}</td>
-            <td>
-                <c:if test="${serviceDetail.contractDetailId != 0}">
-                    <a href = "<c:url value = "/service-contract-detail?action=show&id=${serviceDetail.contractId}"/>">Contract detail</a>
-                </c:if>
-            </td>
-            <td>
-                <a href="<c:url value = "/service-detail?action=edit&id=${serviceDetail.contractId}"/>">Edit</a>
-            </td>
-            <td>
-                <button onclick="onDelete(${serviceDetail.contractId})" type="button" class="btn btn-danger"
-                        data-toggle="modal"
-                        data-target="#exampleModal">
-                    Delete
-                </button>
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form action="/service-detail">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="id" value="" id="idContractDel">
-                                <div class="modal-body">
-                                    Are you sure to delete this contract?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Yes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+<jsp:include page="../common/footer.jsp"></jsp:include>
 
 
 <!-- Optional JavaScript -->

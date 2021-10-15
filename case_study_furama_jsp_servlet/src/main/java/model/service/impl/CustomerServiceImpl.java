@@ -3,6 +3,7 @@ package model.service.impl;
 import model.bean.Customer;
 import model.repository.impl.CustomerRepositoryImpl;
 import model.service.ICustomerService;
+import model.service.Regex;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,13 +21,49 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public void insertCustomer(Customer customer) throws SQLException {
-        customerRepository.insertCustomer(customer);
+    public boolean insertCustomer(Customer customer) throws SQLException {
+        boolean checkCustomerCode = false;
+        boolean checkPhone = false;
+        boolean checkIdCard = false;
+        boolean checkEmail = false;
+        boolean checkBirthday = false;
+        boolean flag = false;
+
+        checkCustomerCode = Regex.validateOfCustomerCode(customer.getCustomerCode());
+        checkPhone = Regex.validateOfPhoneNumber(customer.getPhone());
+        checkIdCard = Regex.validateOfIdCard(customer.getIdCard());
+        checkEmail = Regex.validateOfEmail(customer.getEmail());
+        checkBirthday = Regex.validateOfBirthday(customer.getBirthday());
+
+        flag = checkCustomerCode && checkPhone && checkIdCard && checkEmail && checkBirthday;
+
+        if (flag) {
+            customerRepository.insertCustomer(customer);
+        }
+        return flag;
     }
 
     @Override
     public boolean updateCustomer(Customer customer) throws SQLException {
-        return customerRepository.updateCustomer(customer);
+        boolean checkCustomerCode = false;
+        boolean checkPhone = false;
+        boolean checkIdCard = false;
+        boolean checkEmail = false;
+        boolean checkBirthday = false;
+        boolean flag = false;
+
+        checkCustomerCode = Regex.validateOfCustomerCode(customer.getCustomerCode());
+        checkPhone = Regex.validateOfPhoneNumber(customer.getPhone());
+        checkIdCard = Regex.validateOfIdCard(customer.getIdCard());
+        checkEmail = Regex.validateOfEmail(customer.getEmail());
+        checkBirthday = Regex.validateOfBirthday(customer.getBirthday());
+
+        flag = checkCustomerCode && checkPhone && checkIdCard && checkEmail && checkBirthday;
+
+        if (flag) {
+            return customerRepository.updateCustomer(customer);
+        }
+        return flag;
     }
 
     @Override

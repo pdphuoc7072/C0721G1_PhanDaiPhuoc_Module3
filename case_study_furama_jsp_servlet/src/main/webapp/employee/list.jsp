@@ -21,128 +21,124 @@
 
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Employee Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
         </div>
-    </div>
-</div>
 
-<h4>
-    <a href="#">Search employee</a>
-    <ul>
-        <li>
-            <a href="/employee?action=search&search=name">Search by name</a>
-        </li>
-        <li>
-            <a href="/employee?action=search&search=phone">Search by phone</a>
-        </li>
-    </ul>
-</h4>
-<h4>
-    <a href="/home">Back home</a>
-</h4>
-<table class="table table-striped" id="tableEmployee">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Birthday</th>
-        <th>Id Card</th>
-        <th>Salary</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Address</th>
-        <th>Position</th>
-        <th>Education Degree</th>
-        <th>Division</th>
-        <th>Username</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${requestScope['employeeList']}" var="employee">
-        <tr>
-            <td>${employee.id}</td>
-            <td>${employee.name}</td>
-            <td>${employee.birthday}</td>
-            <td>${employee.idCard}</td>
-            <td>${employee.salary}</td>
-            <td>${employee.phone}</td>
-            <td>${employee.email}</td>
-            <td>${employee.address}</td>
-            <td>
-                <c:choose>
-                    <c:when test="${employee.positionId == 1}">Lễ tân</c:when>
-                    <c:when test="${employee.positionId == 2}">Phục vụ</c:when>
-                    <c:when test="${employee.positionId == 3}">Chuyên viên</c:when>
-                    <c:when test="${employee.positionId == 4}">Giám sát</c:when>
-                    <c:when test="${employee.positionId == 5}">Quản lý</c:when>
-                    <c:when test="${employee.positionId == 6}">Giám đốc</c:when>
-                </c:choose>
-            </td>
-            <td>
-                <c:choose>
-                    <c:when test="${employee.educationDegreeId == 1}">Trung cấp</c:when>
-                    <c:when test="${employee.educationDegreeId == 2}">Cao đẳng</c:when>
-                    <c:when test="${employee.educationDegreeId == 3}">Đại học</c:when>
-                    <c:when test="${employee.educationDegreeId == 4}">Sau đại học</c:when>
-                </c:choose>
-            </td>
-            <td>
-                <c:choose>
-                    <c:when test="${employee.divisionId == 1}">Sale - Marketing</c:when>
-                    <c:when test="${employee.divisionId == 2}">Hành chính</c:when>
-                    <c:when test="${employee.divisionId == 3}">Phục vụ</c:when>
-                    <c:when test="${employee.divisionId == 4}">Quản lý</c:when>
-                </c:choose>
-            </td>
-            <td>${employee.username}</td>
-            <td>
-                <c:if test="${sessionScope.user.roleId == 1}">
-                    <a href="/employee?action=edit&id=${employee.id}">Edit</a>
-                </c:if>
-            </td>
-            <td>
-                <c:if test="${sessionScope.user.roleId == 1}">
-                    <button onclick="onDelete(${employee.getId()})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-                        Delete
-                    </button>
-                </c:if>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="col-10">
+            <a href="/employee?action=search&search=name" class="btn btn-primary">Search employee by name</a>
+            <a href="/employee?action=search&search=phone" class="btn btn-primary">Search employee by phone</a>
+            <a href="/home" class="btn btn-dark">Back home</a>
+            <div class="row">
+                <div class="col-4">
+                    <h4>List all employees</h4>
+                </div>
             </div>
-            <form action="/employee">
-                <input type="hidden" name="action" value="delete">
-                <input type="hidden" name="id" value="" id="idEmployeeDel">
-                <div class="modal-body">
-                    Are you sure to delete this employee?
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Yes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                </div>
-            </form>
+            <table class="table table-striped" id="tableEmployee">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Birthday</th>
+                    <th>Id Card</th>
+                    <th>Salary</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Position</th>
+                    <th>Education Degree</th>
+                    <th>Division</th>
+                    <th>Username</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope['employeeList']}" var="employee">
+                    <tr>
+                        <td>${employee.id}</td>
+                        <td>${employee.name}</td>
+                        <td>${employee.birthday}</td>
+                        <td>${employee.idCard}</td>
+                        <td>${employee.salary}</td>
+                        <td>${employee.phone}</td>
+                        <td>${employee.email}</td>
+                        <td>${employee.address}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${employee.positionId == 1}">Lễ tân</c:when>
+                                <c:when test="${employee.positionId == 2}">Phục vụ</c:when>
+                                <c:when test="${employee.positionId == 3}">Chuyên viên</c:when>
+                                <c:when test="${employee.positionId == 4}">Giám sát</c:when>
+                                <c:when test="${employee.positionId == 5}">Quản lý</c:when>
+                                <c:when test="${employee.positionId == 6}">Giám đốc</c:when>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${employee.educationDegreeId == 1}">Trung cấp</c:when>
+                                <c:when test="${employee.educationDegreeId == 2}">Cao đẳng</c:when>
+                                <c:when test="${employee.educationDegreeId == 3}">Đại học</c:when>
+                                <c:when test="${employee.educationDegreeId == 4}">Sau đại học</c:when>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${employee.divisionId == 1}">Sale - Marketing</c:when>
+                                <c:when test="${employee.divisionId == 2}">Hành chính</c:when>
+                                <c:when test="${employee.divisionId == 3}">Phục vụ</c:when>
+                                <c:when test="${employee.divisionId == 4}">Quản lý</c:when>
+                            </c:choose>
+                        </td>
+                        <td>${employee.username}</td>
+                        <td>
+                            <c:if test="${sessionScope.user.roleId == 1}">
+                                <a href="/employee?action=edit&id=${employee.id}" class="btn btn-warning">Edit</a>
+                            </c:if>
+                        </td>
+                        <td>
+                            <c:if test="${sessionScope.user.roleId == 1}">
+                                <button onclick="onDelete(${employee.getId()})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                    Delete
+                                </button>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/employee">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="" id="idEmployeeDel">
+                            <div class="modal-body">
+                                Are you sure to delete this employee?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Yes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                            </div>
+                        </form>
 
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<jsp:include page="../common/footer.jsp"></jsp:include>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="/static/jquery/jquery-3.5.1.min.js"></script>
@@ -153,8 +149,8 @@
 <script src="/static/datatables/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
-    function onDelete(idContract) {
-        document.getElementById("idContractDel").value = idContract;
+    function onDelete(idEmployee) {
+        document.getElementById("idEmployeeDel").value = idEmployee;
     }
 
     $(document).ready(function () {

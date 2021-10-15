@@ -8,5 +8,5 @@ import java.util.List;
 public interface IContractService {
     Contract selectContract (int id);
     List<Contract> selectAllContracts ();
-    void insertContract (Contract contract) throws SQLException;
+    boolean insertContract (Contract contract) throws SQLException;
 }

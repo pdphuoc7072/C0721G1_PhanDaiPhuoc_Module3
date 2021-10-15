@@ -22,116 +22,131 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Customer Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/customer" class="btn btn-dark">Back to list all customers</a>
+            <div class="row">
+                <h4>
+                    <c:if test='${requestScope["message1"] != null}'>
+                        <span class="message">${requestScope["message1"]}</span>
+                    </c:if>
+                </h4>
+                <h4>
+                    <c:if test='${requestScope["message2"] != null}'>
+                        <span class="message text-danger">${requestScope["message2"]}</span>
+                    </c:if>
+                </h4>
+            </div>
+            <form method="post">
+                <legend>Customer information</legend>
+                <div class="row mt-2">
+                    <div class="col-5">
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Customer code</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="customer_code" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Name</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="name" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Birthday</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="birthday" autocomplete="off" id="datepicker">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Gender</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="gender">
+                                    <option selected>Chọn giới tính</option>
+                                    <option value="1">Nam</option>
+                                    <option value="2">Nữ</option>
+                                    <option value="3">LGBT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Id card</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="id_card" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Phone</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="phone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Email</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="email" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Address</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="address" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Customer type</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="customer_type_id">
+                                    <option selected>Chọn loại khách hàng</option>
+                                    <option value="1">Diamond</option>
+                                    <option value="2">Platinium</option>
+                                    <option value="3">Gold</option>
+                                    <option value="4">Silver</option>
+                                    <option value="5">Member</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-6">
+                                <input type="submit" class="form-control" value="Create new customer">
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<h4>
-    <a href="/customer">Back to list all customer</a>
-</h4>
-<h4>
-    <c:if test='${requestScope["message"] != null}'>
-        <span class="message">${requestScope["message"]}</span>
-    </c:if>
-</h4>
-<form method="post">
-    <legend>Customer information</legend>
-    <div class="row mt-2">
-        <div class="col-5">
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Name</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="name" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Birthday</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="birthday" autocomplete="off" id="datepicker">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Gender</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="gender">
-                        <option selected>Chọn giới tính</option>
-                        <option value="1">Nam</option>
-                        <option value="2">Nữ</option>
-                        <option value="3">LGBT</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Id card</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="id_card" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Phone</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="phone" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Email</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="email" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Address</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="address" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Customer type</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="customer_type_id">
-                        <option selected>Chọn loại khách hàng</option>
-                        <option value="1">Diamond</option>
-                        <option value="2">Platinium</option>
-                        <option value="3">Gold</option>
-                        <option value="4">Silver</option>
-                        <option value="5">Member</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                </div>
-                <div class="col-6">
-                    <input type="submit" class="form-control" value="Create new customer">
-                </div>
-                <div class="col-2">
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+<jsp:include page="../common/footer.jsp"></jsp:include>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

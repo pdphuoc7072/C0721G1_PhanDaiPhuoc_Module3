@@ -1,6 +1,5 @@
 package controller;
 
-import model.bean.Employee;
 import model.bean.User;
 import model.service.impl.EmployeeServiceImpl;
 import model.service.impl.UserServiceImpl;
@@ -15,26 +14,23 @@ import java.util.List;
 @WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
     UserServiceImpl userService = new UserServiceImpl();
-    EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String remember = request.getParameter("remember");
         User user = userService.selectUser(username, password);
-        List<Employee> employeeList = employeeService.selectAllEmployees();
         if (user == null) {
             request.setAttribute("message", "Wrong username or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
 
             Cookie cookieUserName = new Cookie("userNameCookie", user.getUsername());
             Cookie cookiePassword = new Cookie("passwordCookie", user.getPassword());
             if (remember != null) {
-                cookieUserName.setMaxAge(60);
-                cookiePassword.setMaxAge(60);
+                cookieUserName.setMaxAge(60 * 60);
+                cookiePassword.setMaxAge(60 * 60);
             } else {
                 cookieUserName.setMaxAge(0);
                 cookiePassword.setMaxAge(0);
@@ -42,6 +38,9 @@ public class LoginServlet extends HttpServlet {
 
             response.addCookie(cookieUserName);
             response.addCookie(cookiePassword);
+
+            session.setAttribute("user", user);
+            session.setAttribute("sessionUserName", username);
 
             response.sendRedirect("home");
         }
@@ -60,5 +59,6 @@ public class LoginServlet extends HttpServlet {
             }
         }
         request.getRequestDispatcher("login.jsp").forward(request, response);
+
     }
 }

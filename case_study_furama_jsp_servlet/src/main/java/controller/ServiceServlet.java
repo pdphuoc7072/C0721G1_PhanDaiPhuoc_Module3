@@ -76,6 +76,8 @@ public class ServiceServlet extends HttpServlet {
     }
 
     private void createNewService (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        boolean flag = false;
+        String serviceCode = request.getParameter("service_code");
         String name = request.getParameter("name");
         int area = Integer.parseInt(request.getParameter("area"));
         double cost = Double.parseDouble(request.getParameter("cost"));
@@ -86,9 +88,13 @@ public class ServiceServlet extends HttpServlet {
         String descriptionOtherConvenience = request.getParameter("description_other_convenience");
         double poolArea = Double.parseDouble(request.getParameter("pool_area"));
         int numberOfFloors = Integer.parseInt(request.getParameter("number_of_floors"));
-        Service service = new Service(name, area, cost, maxPeople, rentTypeId, serviceTypeId, standardRoom, descriptionOtherConvenience, poolArea, numberOfFloors);
-        serviceService.insertService(service);
-        request.setAttribute("message", "Create successful");
+        Service service = new Service(serviceCode, name, area, cost, maxPeople, rentTypeId, serviceTypeId, standardRoom, descriptionOtherConvenience, poolArea, numberOfFloors);
+        flag = serviceService.insertService(service);
+        if (flag) {
+            request.setAttribute("message1", "Create successful");
+        } else {
+            request.setAttribute("message2", "Create unsuccessful");
+        }
         request.getRequestDispatcher("service/create.jsp").forward(request, response);
     }
 }

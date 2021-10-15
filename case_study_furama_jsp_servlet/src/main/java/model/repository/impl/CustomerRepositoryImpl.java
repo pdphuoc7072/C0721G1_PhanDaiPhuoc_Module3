@@ -15,10 +15,10 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
 
     private static final String SELECT_ALL_CUSTOMERS = "SELECT * FROM customer";
     private static final String SELECT_CUSTOMER_BY_ID = "SELECT * FROM customer WHERE customer_id = ?";
-    private static final String INSERT_CUSTOMER_SQL = "INSERT INTO customer (customer_name, customer_birthday, " +
+    private static final String INSERT_CUSTOMER_SQL = "INSERT INTO customer (customer_code, customer_name, customer_birthday, " +
             "customer_gender, customer_id_card, customer_phone, customer_email, customer_address, customer_type_id) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET customer_name = ?, " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET customer_code = ?, customer_name = ?," +
             "customer_birthday = ?, customer_gender = ?, customer_id_card = ?, customer_phone = ?, customer_email = ?, " +
             "customer_address = ?, customer_type_id = ? WHERE customer_id = ?;";
     private static final String DELETE_CUSTOMER_SQL = "DELETE FROM customer WHERE customer_id = ?; ";
@@ -41,6 +41,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                 preparedStatement.setInt(1, id);
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
+                    String customerCode = resultSet.getString("customer_code");
                     String name = resultSet.getString("customer_name");
                     String birthdaySQL = resultSet.getString("customer_birthday");
                     String birthday = new SimpleDateFormat("dd-MM-yyyy").format
@@ -51,7 +52,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                     String email = resultSet.getString("customer_email");
                     String address = resultSet.getString("customer_address");
                     int customerTypeId = resultSet.getInt("customer_type_id");
-                    customer = new Customer(id, name, birthday, gender, idCard, phone, email, address, customerTypeId);
+                    customer = new Customer(id, customerCode, name, birthday, gender, idCard, phone, email, address, customerTypeId);
                 }
             } catch (SQLException | ParseException e) {
                 e.printStackTrace();
@@ -81,6 +82,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     int id = resultSet.getInt("customer_id");
+                    String customerCode = resultSet.getString("customer_code");
                     String name = resultSet.getString("customer_name");
                     String birthdaySQL = resultSet.getString("customer_birthday");
                     String birthday = new SimpleDateFormat("dd-MM-yyyy").format
@@ -91,7 +93,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                     String email = resultSet.getString("customer_email");
                     String address = resultSet.getString("customer_address");
                     int customerTypeId = resultSet.getInt("customer_type_id");
-                    Customer customer = new Customer(id, name, birthday, gender, idCard, phone, email, address, customerTypeId);
+                    Customer customer = new Customer(id, customerCode, name, birthday, gender, idCard, phone, email, address, customerTypeId);
                     customerList.add(customer);
                 }
             } catch (SQLException | ParseException e) {
@@ -117,15 +119,16 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
         if (connection != null) {
             try {
                 preparedStatement = connection.prepareStatement(INSERT_CUSTOMER_SQL);
-                preparedStatement.setString(1, customer.getName());
-                preparedStatement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format
+                preparedStatement.setString(1, customer.getCustomerCode());
+                preparedStatement.setString(2, customer.getName());
+                preparedStatement.setString(3, new SimpleDateFormat("yyyy-MM-dd").format
                         (new SimpleDateFormat("dd-MM-yyyy").parse(customer.getBirthday())));
-                preparedStatement.setInt(3, customer.getGender());
-                preparedStatement.setString(4, customer.getIdCard());
-                preparedStatement.setString(5, customer.getPhone());
-                preparedStatement.setString(6, customer.getEmail());
-                preparedStatement.setString(7, customer.getAddress());
-                preparedStatement.setInt(8, customer.getCustomerTypeId());
+                preparedStatement.setInt(4, customer.getGender());
+                preparedStatement.setString(5, customer.getIdCard());
+                preparedStatement.setString(6, customer.getPhone());
+                preparedStatement.setString(7, customer.getEmail());
+                preparedStatement.setString(8, customer.getAddress());
+                preparedStatement.setInt(9, customer.getCustomerTypeId());
                 preparedStatement.executeUpdate();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -151,16 +154,17 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
         if (connection != null) {
             try {
                 preparedStatement = connection.prepareStatement(UPDATE_CUSTOMER_SQL);
-                preparedStatement.setString(1, customer.getName());
-                preparedStatement.setString(2, new SimpleDateFormat("yyyy-MM-dd").format
+                preparedStatement.setString(1, customer.getCustomerCode());
+                preparedStatement.setString(2, customer.getName());
+                preparedStatement.setString(3, new SimpleDateFormat("yyyy-MM-dd").format
                         (new SimpleDateFormat("dd-MM-yyyy").parse(customer.getBirthday())));
-                preparedStatement.setInt(3, customer.getGender());
-                preparedStatement.setString(4, customer.getIdCard());
-                preparedStatement.setString(5, customer.getPhone());
-                preparedStatement.setString(6, customer.getEmail());
-                preparedStatement.setString(7, customer.getAddress());
-                preparedStatement.setInt(8, customer.getCustomerTypeId());
-                preparedStatement.setInt(9, customer.getId());
+                preparedStatement.setInt(4, customer.getGender());
+                preparedStatement.setString(5, customer.getIdCard());
+                preparedStatement.setString(6, customer.getPhone());
+                preparedStatement.setString(7, customer.getEmail());
+                preparedStatement.setString(8, customer.getAddress());
+                preparedStatement.setInt(9, customer.getCustomerTypeId());
+                preparedStatement.setInt(10, customer.getId());
                 rowUpdated = preparedStatement.executeUpdate() > 0;
                 return rowUpdated;
             } catch (SQLException | ParseException e) {
@@ -219,6 +223,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                 Customer customer = null;
                 while (resultSet.next()) {
                     int id = resultSet.getInt("customer_id");
+                    String customerCode = resultSet.getString("customer_code");
                     String name = resultSet.getString("customer_name");
                     String birthdaySQL = resultSet.getString("customer_birthday");
                     String birthday = new SimpleDateFormat("dd-MM-yyyy").format
@@ -229,7 +234,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                     String email = resultSet.getString("customer_email");
                     String address = resultSet.getString("customer_address");
                     int customerTypeId = resultSet.getInt("customer_type_id");
-                    customer = new Customer(id, name, birthday, gender, idCard, phone, email, address, customerTypeId);
+                    customer = new Customer(id, customerCode, name, birthday, gender, idCard, phone, email, address, customerTypeId);
                     customerList.add(customer);
                 }
             } catch (SQLException | ParseException e) {
@@ -263,6 +268,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                 Customer customer = null;
                 while (resultSet.next()) {
                     int id = resultSet.getInt("customer_id");
+                    String customerCode = resultSet.getString("customer_code");
                     String name = resultSet.getString("customer_name");
                     String birthdaySQL = resultSet.getString("customer_birthday");
                     String birthday = new SimpleDateFormat("dd-MM-yyyy").format
@@ -273,7 +279,7 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
                     String email = resultSet.getString("customer_email");
                     String address = resultSet.getString("customer_address");
                     int customerTypeId = resultSet.getInt("customer_type_id");
-                    customer = new Customer(id, name, birthday, gender, idCard, phone, email, address, customerTypeId);
+                    customer = new Customer(id, customerCode, name, birthday, gender, idCard, phone, email, address, customerTypeId);
                     customerList.add(customer);
                 }
             } catch (SQLException | ParseException e) {

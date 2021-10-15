@@ -43,8 +43,9 @@ public class ServiceDetailRepositoryImpl implements IServiceDetailRepository {
                     int contractDetailId = resultSet.getInt("contract_detail_id");
                     String attachServiceName = resultSet.getString("attach_service_name");
                     int quantity = resultSet.getInt("quantity");
+                    double total = resultSet.getDouble("total");
                     serviceDetail = new ServiceDetail(serviceId, serviceName, customerName, contractId,
-                            contractStartDate, contractEndDate, contractDetailId, attachServiceName, quantity);
+                            contractStartDate, contractEndDate, contractDetailId, attachServiceName, quantity, total);
                     serviceDetailList.add(serviceDetail);
                 }
             } catch (SQLException | ParseException e) {

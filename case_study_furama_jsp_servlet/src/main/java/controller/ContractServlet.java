@@ -71,9 +71,6 @@ public class ContractServlet extends HttpServlet {
         request.setAttribute("employeeList", employeeList);
         request.setAttribute("customerList", customerList);
         request.setAttribute("serviceList", serviceList);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
         request.getRequestDispatcher("/contract/list.jsp").forward(request, response);
     }
     private void showCreateForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
@@ -83,12 +80,10 @@ public class ContractServlet extends HttpServlet {
         request.setAttribute("employeeList", employeeList);
         request.setAttribute("customerList", customerList);
         request.setAttribute("serviceList", serviceList);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
         request.getRequestDispatcher("/contract/create.jsp").forward(request, response);
     }
     private void createNewContract (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        boolean flag = false;
         String startDate = request.getParameter("start_date");
         String endDate = request.getParameter("end_date");
         double deposit = Double.parseDouble(request.getParameter("deposit"));
@@ -97,8 +92,12 @@ public class ContractServlet extends HttpServlet {
         int customerId = Integer.parseInt(request.getParameter("customer_id"));
         int serviceId = Integer.parseInt(request.getParameter("service_id"));
         Contract contract = new Contract(startDate, endDate, deposit, totalMoney, employeeId, customerId, serviceId);
-        contractService.insertContract(contract);
-        request.setAttribute("message", "Create successful");
+        flag = contractService.insertContract(contract);
+        if (flag) {
+            request.setAttribute("message1", "Create successful");
+        } else {
+            request.setAttribute("message2", "Create unsuccessful");
+        }
         request.getRequestDispatcher("/contract/create.jsp").forward(request, response);
     }
 }

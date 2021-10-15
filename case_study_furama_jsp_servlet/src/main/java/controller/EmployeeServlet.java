@@ -48,16 +48,26 @@ public class EmployeeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         if (action == null) {
             action = "";
         }
         try {
             switch (action) {
                 case "create":
-                    showCreateForm(request, response);
+                    if (user.getRoleId() == 1) {
+                        showCreateForm(request, response);
+                    } else {
+                        response.sendRedirect("error-404.jsp");
+                    }
                     break;
                 case "edit":
-                    showEditForm(request, response);
+                    if (user.getRoleId() == 1) {
+                        showEditForm(request, response);
+                    } else {
+                        response.sendRedirect("error-404.jsp");
+                    }
                     break;
                 case "delete":
                     deleteEmployee(request, response);
@@ -91,6 +101,7 @@ public class EmployeeServlet extends HttpServlet {
     }
 
     private void createNewEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        boolean flag = false;
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
         String idCard = request.getParameter("id_card");
@@ -103,27 +114,29 @@ public class EmployeeServlet extends HttpServlet {
         int divisionId = Integer.parseInt(request.getParameter("division_id"));
         String username = request.getParameter("username");
         Employee employee = new Employee(name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-        employeeService.insertEmployee(employee);
-        request.setAttribute("message", "Create successful");
+        flag = employeeService.insertEmployee(employee);
+        if (flag) {
+            request.setAttribute("message1", "Create successful");
+        } else {
+            request.setAttribute("message2", "Create unsuccessful");
+        }
         request.getRequestDispatcher("employee/create.jsp").forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         Employee employee = employeeService.selectEmployee(id);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
         request.setAttribute("employee", employee);
         request.getRequestDispatcher("/employee/edit.jsp").forward(request, response);
     }
 
     private void editEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        boolean flag = false;
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
-        String idCard = request.getParameter("id_card");
         double salary = Double.parseDouble(request.getParameter("salary"));
+        String idCard = request.getParameter("id_card");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
@@ -183,8 +196,12 @@ public class EmployeeServlet extends HttpServlet {
         }
         String username = request.getParameter("username");
         Employee employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
-        employeeService.updateEmployee(employee);
-        request.setAttribute("message", "Create successful");
+        flag = employeeService.updateEmployee(employee);
+        if (flag) {
+            request.setAttribute("message1", "Edit successful");
+        } else {
+            request.setAttribute("message2", "Edit unsuccessful");
+        }
         request.getRequestDispatcher("/employee/edit.jsp").forward(request, response);
     }
 

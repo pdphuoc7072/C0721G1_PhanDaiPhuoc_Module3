@@ -9,7 +9,7 @@ import java.util.List;
 public interface ICustomerService {
     Customer selectCustomer (int id);
     List<Customer> selectAllCustomers ();
-    void insertCustomer (Customer customer) throws SQLException;
+    boolean insertCustomer (Customer customer) throws SQLException;
     boolean updateCustomer (Customer customer) throws SQLException;
     boolean deleteCustomer (int id) throws SQLException;
     List<Customer> searchCustomerByName (String search);

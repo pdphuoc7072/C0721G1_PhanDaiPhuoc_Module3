@@ -22,111 +22,119 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Contract Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/contract" class="btn btn-dark">Back to list all contracts</a>
+            <div class="row">
+                <h4>
+                    <c:if test='${requestScope["message1"] != null}'>
+                        <span class="message">${requestScope["message1"]}</span>
+                    </c:if>
+                </h4>
+                <h4>
+                    <c:if test='${requestScope["message2"] != null}'>
+                        <span class="message text-danger">${requestScope["message2"]}</span>
+                    </c:if>
+                </h4>
+            </div>
+            <form method="post">
+                <legend>Contract information</legend>
+                <div class="row mt-2">
+                    <div class="col-5">
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Start date</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control datepicker" name="start_date" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">End date</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control datepicker" name="end_date" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Deposit</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="deposit" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Total money</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="total_money" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Employee</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="employee_id">
+                                    <option selected>Chọn nhân viên</option>
+                                    <c:forEach items="${requestScope['employeeList']}" var="employee">
+                                        <option value="${employee.id}">${employee.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Customer</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="customer_id">
+                                    <option selected>Chọn khách hàng</option>
+                                    <c:forEach items="${requestScope['customerList']}" var="customer">
+                                        <option value="${customer.id}">${customer.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                                <label class="col-form-label">Service</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select" aria-label="Default select example" name="service_id">
+                                    <option selected>Chọn dịch vụ</option>
+                                    <c:forEach items="${requestScope['serviceList']}" var="service">
+                                        <option value="${service.id}">${service.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-6">
+                                <input type="submit" class="form-control" value="Create new contract">
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<h4>
-    <a href="/contract">Back to list all contracts</a>
-</h4>
-<h4>
-    <c:if test='${requestScope["message"] != null}'>
-        <span class="message">${requestScope["message"]}</span>
-    </c:if>
-</h4>
-<form method="post">
-    <legend>Contract information</legend>
-    <div class="row mt-2">
-        <div class="col-5">
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Start date</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control datepicker" name="start_date" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">End date</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control datepicker" name="end_date" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Deposit</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="deposit" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Total money</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" name="total_money" autocomplete="off">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Employee</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="employee_id">
-                        <option selected>Chọn nhân viên</option>
-                        <c:forEach items="${requestScope['employeeList']}" var="employee">
-                            <option value="${employee.id}">${employee.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Customer</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="customer_id">
-                        <option selected>Chọn khách hàng</option>
-                        <c:forEach items="${requestScope['customerList']}" var="customer">
-                            <option value="${customer.id}">${customer.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <label class="col-form-label">Service</label>
-                </div>
-                <div class="col-8">
-                    <select class="form-select" aria-label="Default select example" name="service_id">
-                        <option selected>Chọn dịch vụ</option>
-                        <c:forEach items="${requestScope['serviceList']}" var="service">
-                            <option value="${service.id}">${service.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                </div>
-                <div class="col-6">
-                    <input type="submit" class="form-control" value="Create new contract">
-                </div>
-                <div class="col-2">
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+<jsp:include page="../common/footer.jsp"></jsp:include>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

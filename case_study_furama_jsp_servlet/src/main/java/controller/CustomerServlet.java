@@ -77,21 +77,17 @@ public class CustomerServlet extends HttpServlet {
 
     private void listCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         List<Customer> customerList = customerService.selectAllCustomers();
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
         request.setAttribute("customerList", customerList);
         request.getRequestDispatcher("customer/list.jsp").forward(request, response);
     }
 
     private void showCreateForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
         request.getRequestDispatcher("customer/create.jsp").forward(request, response);
     }
 
     private void createNewCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        boolean flag = false;
+        String customerCode = request.getParameter("customer_code");
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
         int gender = Integer.parseInt(request.getParameter("gender"));
@@ -100,9 +96,13 @@ public class CustomerServlet extends HttpServlet {
         String email = request.getParameter("email");
         String address = request.getParameter("address");
         int customerTypeId = Integer.parseInt(request.getParameter("customer_type_id"));
-        Customer customer = new Customer(name, birthday, gender, idCard, phone, email, address, customerTypeId);
-        customerService.insertCustomer(customer);
-        request.setAttribute("message", "Create successful");
+        Customer customer = new Customer(customerCode, name, birthday, gender, idCard, phone, email, address, customerTypeId);
+        flag = customerService.insertCustomer(customer);
+        if (flag) {
+            request.setAttribute("message1", "Create successful");
+        } else {
+            request.setAttribute("message2", "Create unsuccessful");
+        }
         request.getRequestDispatcher("/customer/create.jsp").forward(request, response);
     }
     private void deleteCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
@@ -115,14 +115,13 @@ public class CustomerServlet extends HttpServlet {
     private void showEditForm (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         Customer customer = customerService.selectCustomer(id);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
         request.setAttribute("customer", customer);
         request.getRequestDispatcher("/customer/edit.jsp").forward(request, response);
     }
     private void editCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        boolean flag = false;
         int id = Integer.parseInt(request.getParameter("id"));
+        String customerCode = request.getParameter("customer_code");
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
         String gender = request.getParameter("gender");
@@ -161,17 +160,18 @@ public class CustomerServlet extends HttpServlet {
                 customerTypeIdSQL = 5;
                 break;
         }
-        Customer customer = new Customer(id, name, birthday, genderSQL, idCard, phone, email, address, customerTypeIdSQL);
-        customerService.updateCustomer(customer);
-        request.setAttribute("message", "Update successful");
+        Customer customer = new Customer(id, customerCode, name, birthday, genderSQL, idCard, phone, email, address, customerTypeIdSQL);
+        flag = customerService.updateCustomer(customer);
+        if (flag) {
+            request.setAttribute("message1", "Edit successful");
+        } else {
+            request.setAttribute("message2", "Edit unsuccessful");
+        }
         request.getRequestDispatcher("/customer/edit.jsp").forward(request, response);
     }
 
     private void showSearchForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         String search = request.getParameter("search");
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        request.setAttribute("user", user);
         request.setAttribute("search", search);
         request.getRequestDispatcher("/customer/search.jsp").forward(request, response);
     }

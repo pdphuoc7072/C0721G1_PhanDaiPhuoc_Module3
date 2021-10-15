@@ -10,8 +10,23 @@ public class ServiceDetail {
     private int contractDetailId;
     private String attachServiceName;
     private int quantity;
+    private double total;
 
     public ServiceDetail() {
+    }
+
+    public ServiceDetail(int serviceId, String serviceName, String customerName, int contractId, String contractOfStartDate,
+                         String contractOfEndDate, int contractDetailId, String attachServiceName, int quantity, double total) {
+        this.serviceId = serviceId;
+        this.serviceName = serviceName;
+        this.customerName = customerName;
+        this.contractId = contractId;
+        this.contractOfStartDate = contractOfStartDate;
+        this.contractOfEndDate = contractOfEndDate;
+        this.contractDetailId = contractDetailId;
+        this.attachServiceName = attachServiceName;
+        this.quantity = quantity;
+        this.total = total;
     }
 
     public ServiceDetail(int serviceId, String serviceName, String customerName, int contractId, String contractOfStartDate,
@@ -97,5 +112,13 @@ public class ServiceDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

@@ -20,51 +20,61 @@
     <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Contract detail Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/service-detail" class="btn btn-dark">Back home</a>
+            <div class="row">
+                <div class="col-4">
+                    <h4>List service contract detail</h4>
+                </div>
+            </div>
+            <table class="table table-striped" id="tableSCD">
+                <thead>
+                <tr>
+                    <th>Contract Id</th>
+                    <th>Contract Detail Id</th>
+                    <th>Attach Service Name</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope['serviceDetailListById']}" var="serviceDetail">
+                    <tr>
+                        <td>${serviceDetail.contractId}</td>
+                        <td>${serviceDetail.contractDetailId}</td>
+                        <td>${serviceDetail.attachServiceName}</td>
+                        <td>${serviceDetail.quantity}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-<h4>
-    <a href="/service-detail">Back service detail</a>
-</h4>
-
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Contract Id</th>
-        <th>Contract Detail Id</th>
-        <th>Attach Service Name</th>
-        <th>Quantity</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${requestScope['serviceDetailListById']}" var="serviceDetail">
-        <tr>
-            <td>${serviceDetail.contractId}</td>
-            <td>${serviceDetail.contractDetailId}</td>
-            <td>${serviceDetail.attachServiceName}</td>
-            <td>${serviceDetail.quantity}</td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="../static/bootstrap-4.3.1-dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+<script src="/static/jquery/jquery-3.5.1.min.js"></script>
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+<script src="/static/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/static/datatables/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#tableSCD").DataTable({
+            "dom": 'lrtip',
+            "lengthChange": false,
+            "pageLength": 8
+        })
+    })
+</script>
 </body>
 </html>

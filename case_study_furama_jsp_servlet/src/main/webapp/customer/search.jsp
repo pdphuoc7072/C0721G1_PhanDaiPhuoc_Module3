@@ -20,37 +20,35 @@
     <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Search customer by <c:out value="${search}"></c:out></h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/customer" class="btn btn-dark">Back to list all customers</a>
+            <form method="post">
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <h3>Please enter <c:out value="${search}"></c:out> of customer: </h3>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <input type="text" class="form-control" name="<c:out value="${search}"></c:out>">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-2">
+                        <input type="submit" class="form-control" value="Search customer">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
-<h3>
-    <a href="/customer">Back to list all customers</a>
-</h3>
-<form method="post">
-    <div class="row mt-2">
-        <div class="col-4">
-            <h3>Please enter <c:out value="${search}"></c:out> of customer: </h3>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-4">
-            <input type="text" class="form-control" name="<c:out value="${search}"></c:out>">
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-2">
-            <input type="submit" class="form-control" value="Search customer">
-        </div>
-    </div>
-</form>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

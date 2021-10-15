@@ -3,6 +3,7 @@ package model.service.impl;
 import model.bean.Service;
 import model.repository.impl.ServiceRepositoryImpl;
 import model.service.IServiceService;
+import model.service.Regex;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,7 +21,21 @@ public class ServiceServiceImpl implements IServiceService {
     }
 
     @Override
-    public void insertService(Service service) throws SQLException {
-        serviceRepository.insertService(service);
+    public boolean insertService(Service service) throws SQLException {
+        boolean checkServiceCode = false;
+        boolean checkCost = false;
+        boolean checkNumberOfFloors = false;
+        boolean check = false;
+
+        checkServiceCode = Regex.validateOfServiceCode(service.getServiceCode());
+        checkCost = Regex.validateOfNumberDouble(service.getCost());
+        checkNumberOfFloors = Regex.validateOfNumberInt(service.getNumberOfFloors());
+
+        check = checkServiceCode && checkCost && checkNumberOfFloors;
+
+        if (check) {
+            serviceRepository.insertService(service);
+        }
+        return check;
     }
 }

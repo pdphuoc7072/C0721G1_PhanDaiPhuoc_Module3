@@ -20,77 +20,88 @@
     <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Contract Management</h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+
+        <div class="col-10">
+            <a href="/home" class="btn btn-dark">Back home</a>
+            <div class="row">
+                <div class="col-4">
+                    <h4>List All Contracts</h4>
+                </div>
+            </div>
+            <table class="table table-striped" id="tableContract">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Deposit</th>
+                    <th>Total money</th>
+                    <th>Employee</th>
+                    <th>Customer</th>
+                    <th>Service</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${requestScope['contractList']}" var="contract">
+                    <tr>
+                        <td>${contract.id}</td>
+                        <td>${contract.startDate}</td>
+                        <td>${contract.endDate}</td>
+                        <td>${contract.deposit}</td>
+                        <td>${contract.totalMoney}</td>
+                        <td>
+                            <c:forEach items="${requestScope['employeeList']}" var="employee">
+                                <c:if test="${contract.employeeId == employee.id}">
+                                    ${employee.name}
+                                </c:if>
+                            </c:forEach>
+                        </td>
+                        <td>
+                            <c:forEach items="${requestScope['customerList']}" var="customer">
+                                <c:if test="${contract.customerId == customer.id}">
+                                    ${customer.name}
+                                </c:if>
+                            </c:forEach>
+                        </td>
+                        <td>
+                            <c:forEach items="${requestScope['serviceList']}" var="service">
+                                <c:if test="${contract.serviceId == service.id}">
+                                    ${service.name}
+                                </c:if>
+                            </c:forEach>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-<h4>
-    <a href="/home">Back home</a>
-</h4>
-
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Start date</th>
-        <th>End date</th>
-        <th>Deposit</th>
-        <th>Total money</th>
-        <th>Employee</th>
-        <th>Customer</th>
-        <th>Service</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${requestScope['contractList']}" var="contract">
-        <tr>
-            <td>${contract.id}</td>
-            <td>${contract.startDate}</td>
-            <td>${contract.endDate}</td>
-            <td>${contract.deposit}</td>
-            <td>${contract.totalMoney}</td>
-            <td>
-                <c:forEach items="${requestScope['employeeList']}" var="employee">
-                    <c:if test="${contract.employeeId == employee.id}">
-                        ${employee.name}
-                    </c:if>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach items="${requestScope['customerList']}" var="customer">
-                    <c:if test="${contract.customerId == customer.id}">
-                        ${customer.name}
-                    </c:if>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach items="${requestScope['serviceList']}" var="service">
-                    <c:if test="${contract.serviceId == service.id}">
-                        ${service.name}
-                    </c:if>
-                </c:forEach>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+<jsp:include page="../common/footer.jsp"></jsp:include>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="../static/bootstrap-4.3.1-dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+<script src="/static/jquery/jquery-3.5.1.min.js"></script>
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+<script src="/static/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/static/datatables/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#tableContract").DataTable({
+            "dom": 'lrtip',
+            "lengthChange": false,
+            "pageLength": 8
+        })
+    })
+</script>
 </body>
 </html>

@@ -20,91 +20,88 @@
     <link rel="stylesheet" type="text/css" href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-8">
-        <h1>Search employee by <c:out value="${search}"></c:out></h1>
-    </div>
-    <div class="col-4">
-        <div>
-            <p class="navbar-text" style="float:right">Welcome ${sessionScope.user.employeeName}</p>
+<div class="container-fluid">
+    <jsp:include page="../common/header-navbar.jsp"></jsp:include>
+    <div class="row">
+        <div class="col-2 bg-light">
+            <jsp:include page="../common/left-sidebar.jsp"></jsp:include>
+        </div>
+        <div class="col-10">
+            <a href="/employee" class="btn btn-dark">Back to list all employees</a>
+            <div class="row">
+                <c:if test="${empty employeeList}">
+                    <h3 style="color: red">No results were found</h3>
+                </c:if>
+                <c:if test="${not empty employeeList}">
+                    <h3>
+                        <c:if test='${requestScope["message"] != null}'>
+                            <span class="message">${requestScope["message"]}</span>
+                        </c:if>
+                    </h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Birthday</th>
+                            <th>Id Card</th>
+                            <th>Salary</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Position</th>
+                            <th>Education Degree</th>
+                            <th>Division</th>
+                            <th>Username</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${requestScope['employeeList']}" var="employee">
+                            <tr>
+                                <td>${employee.id}</td>
+                                <td>${employee.name}</td>
+                                <td>${employee.birthday}</td>
+                                <td>${employee.idCard}</td>
+                                <td>${employee.salary}</td>
+                                <td>${employee.phone}</td>
+                                <td>${employee.email}</td>
+                                <td>${employee.address}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${employee.positionId == 1}">Lễ tân</c:when>
+                                        <c:when test="${employee.positionId == 2}">Phục vụ</c:when>
+                                        <c:when test="${employee.positionId == 3}">Chuyên viên</c:when>
+                                        <c:when test="${employee.positionId == 4}">Giám sát</c:when>
+                                        <c:when test="${employee.positionId == 5}">Quản lý</c:when>
+                                        <c:when test="${employee.positionId == 6}">Giám đốc</c:when>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${employee.educationDegreeId == 1}">Trung cấp</c:when>
+                                        <c:when test="${employee.educationDegreeId == 2}">Cao đẳng</c:when>
+                                        <c:when test="${employee.educationDegreeId == 3}">Đại học</c:when>
+                                        <c:when test="${employee.educationDegreeId == 4}">Sau đại học</c:when>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${employee.divisionId == 1}">Sale - Marketing</c:when>
+                                        <c:when test="${employee.divisionId == 2}">Hành chính</c:when>
+                                        <c:when test="${employee.divisionId == 3}">Phục vụ</c:when>
+                                        <c:when test="${employee.divisionId == 4}">Quản lý</c:when>
+                                    </c:choose>
+                                </td>
+                                <td>${employee.username}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:if>
+            </div>
         </div>
     </div>
 </div>
-<c:if test="${empty employeeList}">
-    <h3 style="color: red">No results were found</h3>
-    <h3>
-        <a href="/employee">Back to list all employees</a>
-    </h3>
-</c:if>
-<c:if test="${not empty employeeList}">
-    <h3>
-        <c:if test='${requestScope["message"] != null}'>
-            <span class="message">${requestScope["message"]}</span>
-        </c:if>
-    </h3>
-    <h3>
-        <a href="/employee">Back to list all employees</a>
-    </h3>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Birthday</th>
-            <th>Id Card</th>
-            <th>Salary</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Position</th>
-            <th>Education Degree</th>
-            <th>Division</th>
-            <th>Username</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${requestScope['employeeList']}" var="employee">
-            <tr>
-                <td>${employee.id}</td>
-                <td>${employee.name}</td>
-                <td>${employee.birthday}</td>
-                <td>${employee.idCard}</td>
-                <td>${employee.salary}</td>
-                <td>${employee.phone}</td>
-                <td>${employee.email}</td>
-                <td>${employee.address}</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${employee.positionId == 1}">Lễ tân</c:when>
-                        <c:when test="${employee.positionId == 2}">Phục vụ</c:when>
-                        <c:when test="${employee.positionId == 3}">Chuyên viên</c:when>
-                        <c:when test="${employee.positionId == 4}">Giám sát</c:when>
-                        <c:when test="${employee.positionId == 5}">Quản lý</c:when>
-                        <c:when test="${employee.positionId == 6}">Giám đốc</c:when>
-                    </c:choose>
-                </td>
-                <td>
-                    <c:choose>
-                        <c:when test="${employee.educationDegreeId == 1}">Trung cấp</c:when>
-                        <c:when test="${employee.educationDegreeId == 2}">Cao đẳng</c:when>
-                        <c:when test="${employee.educationDegreeId == 3}">Đại học</c:when>
-                        <c:when test="${employee.educationDegreeId == 4}">Sau đại học</c:when>
-                    </c:choose>
-                </td>
-                <td>
-                    <c:choose>
-                        <c:when test="${employee.divisionId == 1}">Sale - Marketing</c:when>
-                        <c:when test="${employee.divisionId == 2}">Hành chính</c:when>
-                        <c:when test="${employee.divisionId == 3}">Phục vụ</c:when>
-                        <c:when test="${employee.divisionId == 4}">Quản lý</c:when>
-                    </c:choose>
-                </td>
-                <td>${employee.username}</td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</c:if>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

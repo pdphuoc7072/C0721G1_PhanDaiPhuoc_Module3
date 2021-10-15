@@ -3,6 +3,7 @@ package model.service.impl;
 import model.bean.ContractDetail;
 import model.repository.impl.ContractDetailRepositoryImpl;
 import model.service.IContractDetailService;
+import model.service.Regex;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,8 +22,15 @@ public class ContractDetailServiceImpl implements IContractDetailService {
     }
 
     @Override
-    public void insertContractDetail(ContractDetail contractDetail) throws SQLException {
-        contractDetailRepository.insertContractDetail(contractDetail);
+    public boolean insertContractDetail(ContractDetail contractDetail) throws SQLException {
+        boolean checkQuantity = false;
+
+        checkQuantity = Regex.validateOfNumberInt(contractDetail.getQuantity());
+
+        if (checkQuantity) {
+            contractDetailRepository.insertContractDetail(contractDetail);
+        }
+        return checkQuantity;
     }
 
     public List<ContractDetail> selectContractDetailByContractId (int id) {

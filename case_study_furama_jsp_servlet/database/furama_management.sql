@@ -239,7 +239,8 @@ BEGIN
     ct.contract_end_date,
     cd.contract_detail_id,
     att.attach_service_name,
-    cd.quantity
+    cd.quantity,
+    SUM(sv.service_cost + COALESCE(att.attach_service_cost * cd.quantity, 0)) as total
 FROM
     contract ct
         JOIN
@@ -279,4 +280,10 @@ FROM
 END$$
 DELIMITER ;
 
-CALL get_service_detail_by_id (6);
+CALL get_service_detail_by_id (1);
+
+ALTER TABLE customer
+ADD customer_code VARCHAR(255) NOT NULL;
+
+ALTER TABLE service
+ADD service_code VARCHAR(255) NOT NULL;
