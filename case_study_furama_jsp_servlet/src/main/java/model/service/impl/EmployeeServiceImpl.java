@@ -1,6 +1,9 @@
 package model.service.impl;
 
+import model.bean.Division;
+import model.bean.EducationDegree;
 import model.bean.Employee;
+import model.bean.Position;
 import model.repository.impl.EmployeeRepositoryImpl;
 import model.service.IEmployeeService;
 import model.service.Regex;
@@ -81,5 +84,17 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public List<Employee> searchEmployeeByPhone(String search) {
         return employeeRepository.searchEmployeeByPhone(search);
+    }
+
+    public List<Position> selectAllPositions () {
+        return employeeRepository.selectAllPositions();
+    }
+
+    public List<Division> selectAllDivision () {
+        return employeeRepository.selectAllDivision();
+    }
+
+    public List<EducationDegree> selectAllEducation () {
+        return employeeRepository.selectAllEducation();
     }
 }

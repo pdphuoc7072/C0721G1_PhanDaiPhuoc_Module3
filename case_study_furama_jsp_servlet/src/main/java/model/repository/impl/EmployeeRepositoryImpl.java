@@ -1,6 +1,9 @@
 package model.repository.impl;
 
+import model.bean.Division;
+import model.bean.EducationDegree;
 import model.bean.Employee;
+import model.bean.Position;
 import model.repository.DBConnection;
 import model.repository.IEmployeeRepository;
 
@@ -24,6 +27,9 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
     private static final String SELECT_EMPLOYEE_BY_NAME = "SELECT * FROM employee WHERE substring_index(employee_name,' ', -1) LIKE ?;";
     private static final String SELECT_EMPLOYEE_BY_PHONE = "SELECT * FROM employee WHERE employee_phone LIKE ?;";
 
+    private static final String SELECT_ALL_POSITIONS = "SELECT * FROM position";
+    private static final String SELECT_ALL_DIVISION = "SELECT * FROM division";
+    private static final String SELECT_ALL_EDUCATION = "SELECT * FROM education_degree";
     public EmployeeRepositoryImpl() {
     }
 
@@ -317,5 +323,101 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 }
             }
         }
+    }
+
+    public List<Position> selectAllPositions () {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Position> positionList = new ArrayList<>();
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_ALL_POSITIONS);
+                resultSet = preparedStatement.executeQuery();
+                Position position = null;
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("position_id");
+                    String name = resultSet.getString("position_name");
+                    position = new Position(id, name);
+                    positionList.add(position);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
+        }
+        return positionList;
+    }
+
+    public List<Division> selectAllDivision () {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Division> divisionList = new ArrayList<>();
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_ALL_DIVISION);
+                resultSet = preparedStatement.executeQuery();
+                Division division = null;
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("division_id");
+                    String name = resultSet.getString("division_name");
+                    division = new Division(id, name);
+                    divisionList.add(division);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
+        }
+        return divisionList;
+    }
+
+    public List<EducationDegree> selectAllEducation () {
+        Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<EducationDegree> educationDegreeList = new ArrayList<>();
+
+        if (connection != null) {
+            try {
+                preparedStatement = connection.prepareStatement(SELECT_ALL_EDUCATION);
+                resultSet = preparedStatement.executeQuery();
+                EducationDegree educationDegree = null;
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("education_degree_id");
+                    String name = resultSet.getString("education_degree_name");
+                    educationDegree = new EducationDegree(id, name);
+                    educationDegreeList.add(educationDegree);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                DBConnection.close();
+            }
+        }
+        return educationDegreeList;
     }
 }

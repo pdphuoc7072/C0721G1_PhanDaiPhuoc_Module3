@@ -120,26 +120,20 @@
                                 <label class="col-form-label">Position</label>
                             </div>
                             <div class="col-8">
-                                <c:choose>
-                                    <c:when test="${employee.positionId == 1}">
-                                        <input type="text" class="form-control" name="position" value="Lễ tân">
-                                    </c:when>
-                                    <c:when test="${employee.positionId == 2}">
-                                        <input type="text" class="form-control" name="position" value="Phục vụ">
-                                    </c:when>
-                                    <c:when test="${employee.positionId == 3}">
-                                        <input type="text" class="form-control" name="position" value="Chuyên viên">
-                                    </c:when>
-                                    <c:when test="${employee.positionId == 4}">
-                                        <input type="text" class="form-control" name="position" value="Giám sát">
-                                    </c:when>
-                                    <c:when test="${employee.positionId == 5}">
-                                        <input type="text" class="form-control" name="position" value="Quản lý">
-                                    </c:when>
-                                    <c:when test="${employee.positionId == 6}">
-                                        <input type="text" class="form-control" name="position" value="Giám đốc">
-                                    </c:when>
-                                </c:choose>
+                                <select class="form-select" name="position">
+                                    <option>Chọn vị trí</option>
+                                    <c:forEach items="${positionList}" var="position">
+                                        <c:choose>
+                                            <c:when test="${employee.positionId == position.id}">
+                                                <option value="${position.id}" selected>${position.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${position.id}">${position.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+
+                                </select>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -147,20 +141,19 @@
                                 <label class="col-form-label">Education degree</label>
                             </div>
                             <div class="col-8">
-                                <c:choose>
-                                    <c:when test="${employee.educationDegreeId == 1}">
-                                        <input type="text" class="form-control" name="education_degree" value="Trung cấp">
-                                    </c:when>
-                                    <c:when test="${employee.educationDegreeId == 2}">
-                                        <input type="text" class="form-control" name="education_degree" value="Cao đẳng">
-                                    </c:when>
-                                    <c:when test="${employee.educationDegreeId == 3}">
-                                        <input type="text" class="form-control" name="education_degree" value="Đại học">
-                                    </c:when>
-                                    <c:when test="${employee.educationDegreeId == 4}">
-                                        <input type="text" class="form-control" name="education_degree" value="Sau đại học">
-                                    </c:when>
-                                </c:choose>
+                                <select class="form-select" name="education_degree">
+                                    <option>Chọn trình độ</option>
+                                    <c:forEach items="${educationDegreeList}" var="educationDegree">
+                                        <c:choose>
+                                            <c:when test="${employee.educationDegreeId == educationDegree.id}">
+                                                <option value="${educationDegree.id}" selected>${educationDegree.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${educationDegree.id}">${educationDegree.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -168,20 +161,19 @@
                                 <label class="col-form-label">Division</label>
                             </div>
                             <div class="col-8">
-                                <c:choose>
-                                    <c:when test="${employee.divisionId == 1}">
-                                        <input type="text" class="form-control" name="division" value="Sale - Marketing">
-                                    </c:when>
-                                    <c:when test="${employee.divisionId == 2}">
-                                        <input type="text" class="form-control" name="division" value="Hành chính">
-                                    </c:when>
-                                    <c:when test="${employee.divisionId == 3}">
-                                        <input type="text" class="form-control" name="division" value="Phục vụ">
-                                    </c:when>
-                                    <c:when test="${employee.divisionId == 4}">
-                                        <input type="text" class="form-control" name="division" value="Quản lý">
-                                    </c:when>
-                                </c:choose>
+                                <select class="form-select" name="division">
+                                    <option>Chọn vị trí</option>
+                                    <c:forEach items="${divisionList}" var="division">
+                                        <c:choose>
+                                            <c:when test="${employee.divisionId == division.id}">
+                                                <option value="${division.id}" selected>${division.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${division.id}">${division.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
                         <div class="row mt-2">

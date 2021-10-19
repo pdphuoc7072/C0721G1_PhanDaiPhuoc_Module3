@@ -1,7 +1,6 @@
 package controller;
 
-import model.bean.Employee;
-import model.bean.User;
+import model.bean.*;
 import model.service.impl.EmployeeServiceImpl;
 
 import javax.servlet.RequestDispatcher;
@@ -122,7 +121,13 @@ public class EmployeeServlet extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         Employee employee = employeeService.selectEmployee(id);
+        List<Position> positionList = employeeService.selectAllPositions();
+        List<Division> divisionList = employeeService.selectAllDivision();
+        List<EducationDegree> educationDegreeList = employeeService.selectAllEducation();
         request.setAttribute("employee", employee);
+        request.setAttribute("positionList", positionList);
+        request.setAttribute("divisionList", divisionList);
+        request.setAttribute("educationDegreeList", educationDegreeList);
         request.getRequestDispatcher("/employee/edit.jsp").forward(request, response);
     }
 
@@ -136,60 +141,9 @@ public class EmployeeServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        String position = request.getParameter("position");
-        int positionId = 0;
-        switch (position) {
-            case "Lễ tân":
-                positionId = 1;
-                break;
-            case "Phục vụ":
-                positionId = 2;
-                break;
-            case "Chuyên viên":
-                positionId = 3;
-                break;
-            case "Giám sát":
-                positionId = 4;
-                break;
-            case "Quản lý":
-                positionId = 5;
-                break;
-            case "Giám đốc":
-                positionId = 6;
-                break;
-        }
-        String educationDegree = request.getParameter("education_degree");
-        int educationDegreeId = 0;
-        switch (educationDegree) {
-            case "Trung cấp":
-                educationDegreeId = 1;
-                break;
-            case "Cao đẳng":
-                educationDegreeId = 2;
-                break;
-            case "Đại học":
-                educationDegreeId = 3;
-                break;
-            case "Sau đại học":
-                educationDegreeId = 4;
-                break;
-        }
-        String division = request.getParameter("division");
-        int divisionId = 0;
-        switch (division) {
-            case "Sale - Marketing":
-                divisionId = 1;
-                break;
-            case "Hành chính":
-                divisionId = 2;
-                break;
-            case "Phục vụ":
-                divisionId = 3;
-                break;
-            case "Quản lý":
-                divisionId = 4;
-                break;
-        }
+        int positionId = Integer.parseInt(request.getParameter("position"));
+        int educationDegreeId = Integer.parseInt(request.getParameter("education_degree"));
+        int divisionId = Integer.parseInt(request.getParameter("division"));
         String username = request.getParameter("username");
         Employee employee = new Employee(id, name, birthday, idCard, salary, phone, email, address, positionId, educationDegreeId, divisionId, username);
         flag = employeeService.updateEmployee(employee);
